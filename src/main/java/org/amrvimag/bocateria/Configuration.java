@@ -22,6 +22,22 @@ public class Configuration {
     public static final char SEPARATOR = '=';
 
     /**
+     * This method will simply run at the start of the program, right after the
+     * main class is processed and will add a hook to save the data to a file
+     * whenever the application stops.
+     */
+    static {
+        Configuration.reload();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                Configuration.save();
+            }
+
+        });
+    }
+
+    /**
      * Reads the data from the configuration file
      */
     public static void reload() {
@@ -32,7 +48,6 @@ public class Configuration {
 
         for (String line : data)
             parseData(line);
-
     }
 
     /**
@@ -221,7 +236,7 @@ public class Configuration {
         if (index >= 0) {
             values.put(
                     line.substring(0, index).trim(),
-                    line.length() > index + 1 ? (line.substring(index) + 1)
+                    line.length() > index + 1 ? (line.substring(index + 1))
                     .trim() : ""
             );
         }
