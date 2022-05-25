@@ -6,7 +6,13 @@
     <version>UNDER DEVELOP</version>
     <packaging>jar</packaging>
     <name>Proyecto DAM 3º trimestre - Bocateria</name>
-    <description>Proyecto final de Primero de DAM (Grado superior de Desarrollo de Aplicaciones Multiplataforma que simula una interfaz de una aplicacion de caja registradora de una bocateria, usando una base de datos</description>
+    <description>Proyecto final de Primero de DAM (Grado superior de Desarrollo de Aplicaciones Multiplataforma que simula una interfaz de una aplicación de caja registradora de una bocatería, usando una base de datos</description>
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt</url>
+        </license>
+    </licenses>
     <developers>
         <developer>
             <id>amrv</id>
