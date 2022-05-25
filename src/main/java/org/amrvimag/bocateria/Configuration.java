@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  */
 public class Configuration {
 
-    private static Map<String, String> values;
+    private static final Map<String, String> values = new HashMap<>();
     private static final List<ConfigurationListener> listeners = new ArrayList<>();
 
     public static final String FILE = "config.dat";
@@ -38,12 +38,24 @@ public class Configuration {
     }
 
     /**
+     * Sets a default configuration so if the key does not exist it will hold
+     * the given value and will also trigger the ConfigurationListeners, however
+     * if the configuration already contains a value for the given key it will
+     * simply do nothing.
+     *
+     * @param key the key of the configuration
+     * @param value the value of the configuration
+     */
+    public static void setDefault(String key, String value) {
+        if (Configuration.hasConfig(key))
+            return;
+        setConfig(key, value);
+    }
+
+    /**
      * Reads the data from the configuration file
      */
     public static void reload() {
-        if (values == null)
-            values = new HashMap<>();
-
         String[] data = ResourceIO.storedArray(FILE);
 
         for (String line : data)
@@ -57,8 +69,7 @@ public class Configuration {
      * @return true if the loaded data contains the key, false otherwise
      */
     public static boolean hasConfig(String key) {
-        key = key.trim();
-        return values != null && values.containsKey(key);
+        return values.containsKey(key.trim());
     }
 
     /**
@@ -70,26 +81,27 @@ public class Configuration {
      * value is found
      */
     public static String getConfig(String key) {
-        key = key.trim();
-        return values == null ? "" : values.get(key) == null ? "" : values
-                .get(key);
+        final String value = values.get(key.trim());
+        return value == null ? "" : value;
     }
 
     /**
      * Replaces the value of given key with any value, this will trigger all
-     * {@code ConfigurationListener}.
+     * {@code ConfigurationListener}, however this will only occur when the
+     * value is changed, so if the replacement value is the same as the previous
+     * one the configuration will not change.
      *
      * @param key the configuration key
      * @param value the value to be replaced with
-     * @return true if the operation was succesful, false otherwise
+     * @return true if the configuration was set, false otherwise
      */
     public static boolean setConfig(String key, String value) {
-        if (values == null)
-            return false;
-
         key = key.trim();
         final String old = getConfig(key);
         value = value.trim();
+
+        if (old.equals(value))
+            return false;
 
         for (ConfigurationListener listener : listeners)
             listener.onChange(key, old, value);
@@ -217,9 +229,6 @@ public class Configuration {
      * @return true if the configuration was saved succesfully.
      */
     public static boolean save() {
-        if (values == null)
-            return false;
-
         String[] data = new String[values.size()];
         int index = 0;
         for (Entry<String, String> entry : values.entrySet()) {
