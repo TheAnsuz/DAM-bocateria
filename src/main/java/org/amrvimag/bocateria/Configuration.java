@@ -66,10 +66,10 @@ public class Configuration {
      * Checks if the previously read data contains the given configuration key.
      *
      * @param key configuration key to be check
-     * @return true if the loaded data contains the key, false otherwise
+     * @return true if the loaded data contains a value for the key, false otherwise
      */
     public static boolean hasConfig(String key) {
-        return values.containsKey(key.trim());
+        return Configuration.getConfig(key.trim()).length() > 0;
     }
 
     /**
