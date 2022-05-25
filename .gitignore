@@ -21,6 +21,9 @@ manifest.mf
 *.iws
 *.ipr
 
+# Automatic resources #
+config.dat
+
 # Compiled class file
 *.class
 
