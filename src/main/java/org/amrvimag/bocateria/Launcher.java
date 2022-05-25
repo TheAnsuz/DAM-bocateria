@@ -6,4 +6,7 @@ package org.amrvimag.bocateria;
  */
 public class Launcher {
     
+    public static void main(String[] args) {
+        
+    }
 }
