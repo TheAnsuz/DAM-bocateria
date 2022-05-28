@@ -3,12 +3,12 @@ package org.amrvimag.bocateria.model.entity;
 public class Empleado {
 
     private final String id;
-    private String nombre;
+    private String name;
     private double comision;
 
-    public Empleado(String id, String nombre, double comision) {
+    public Empleado(String id, String name, double comision) {
         this.id = id;
-        this.nombre = nombre;
+        this.name = name;
         this.comision = comision;
     }
 
@@ -16,12 +16,12 @@ public class Empleado {
         return id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getName() {
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getComision() {
@@ -30,5 +30,14 @@ public class Empleado {
 
     public void setComision(double comision) {
         this.comision = comision;
+    }
+
+    @Override
+    public String toString() {
+        return "Empleado{" +
+                "id='" + id + '\'' +
+                ", nombre='" + name + '\'' +
+                ", comision=" + comision +
+                '}';
     }
 }
