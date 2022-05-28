@@ -66,7 +66,8 @@ public class Configuration {
      * Checks if the previously read data contains the given configuration key.
      *
      * @param key configuration key to be check
-     * @return true if the loaded data contains a value for the key, false otherwise
+     * @return true if the loaded data contains a value for the key, false
+     * otherwise
      */
     public static boolean hasConfig(String key) {
         return Configuration.getConfig(key.trim()).length() > 0;
@@ -83,6 +84,20 @@ public class Configuration {
     public static String getConfig(String key) {
         final String value = values.get(key.trim());
         return value == null ? "" : value;
+    }
+
+    /**
+     * Gets the value of the given configuration key, if no key is found, it
+     * will set the default value for that key and also return it.
+     *
+     * @param key configuration key to be check
+     * @param defaultValue value that will be set and returned if no
+     * configuration is found
+     * @return the value of that configuration or the defaultValue
+     */
+    public static String getDefaultConfig(String key, String defaultValue) {
+        setDefault(key, defaultValue);
+        return getConfig(key);
     }
 
     /**
