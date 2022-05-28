@@ -9,7 +9,6 @@ import org.amrvimag.bocateria.model.entity.Venta;
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 /**
  *

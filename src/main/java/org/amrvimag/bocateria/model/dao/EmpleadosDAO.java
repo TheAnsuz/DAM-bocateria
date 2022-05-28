@@ -1,7 +1,6 @@
 package org.amrvimag.bocateria.model.dao;
 
 import org.amrvimag.bocateria.model.entity.Empleado;
-import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
 import java.sql.Connection;
@@ -82,10 +81,20 @@ public class EmpleadosDAO {
      * @throws SQLException
      */
     public static boolean removeEmp(Empleado emp) throws SQLException {
+        return removeEmp(emp.getId());
+    }
+
+    /**
+     * Removes an employee from the database
+     * @param id The employee to remove
+     * @return Whether the operation has been carried out successfully
+     * @throws SQLException
+     */
+    public static boolean removeEmp(String id) throws SQLException {
         Connection con = ConnectionDB.getConnection();
         String update = "DELETE FROM empleados WHERE id_empleado=?";
         PreparedStatement pst = con.prepareStatement(update);
-        pst.setString(1, emp.getId());
+        pst.setString(1, id);
 
         return pst.executeUpdate() > 0;
     }
