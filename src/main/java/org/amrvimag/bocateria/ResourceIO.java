@@ -51,7 +51,7 @@ public class ResourceIO {
      */
     public static StringBuilder resourceData(String path) {
         final StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
+        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
                 .resourceStream(path)))) {
 
             while (reader.ready()) {
@@ -74,7 +74,7 @@ public class ResourceIO {
      */
     public static String[] resourceArray(String path) {
 
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
+        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
                 .resourceStream(path)))) {
 
             Object[] lines = reader.lines().toArray();
@@ -105,6 +105,28 @@ public class ResourceIO {
     }
 
     /**
+     * Obtains an image given the path to that resource, capable of reading GIF
+     * (only first frame), PNG, JPEG, BMP, WBMP.
+     *
+     * @param path the path of the resource, starting from {@code res/}
+     * @param width the width of the result image
+     * @param height the hegiht of the result image
+     * @return a buffered image using the given image
+     */
+    public static BufferedImage resourceImage(String path, int width, int height) {
+        try {
+            final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            img.createGraphics().drawImage(ImageIO.read(ResourceIO
+                    .resourceStream(path)), 0, 0, width, height, null);
+            return img;
+        } catch (IOException | NullPointerException ex) {
+            Logger.getLogger(ResourceIO.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            return DEFAULT_IMAGE;
+        }
+    }
+
+    /**
      * Retrieves an image from a system file given its path capable of reading
      * GIF (only first frame), PNG, JPEG, BMP, WBMP.
      *
@@ -122,13 +144,35 @@ public class ResourceIO {
     }
 
     /**
+     * Retrieves an image from a system file given its path capable of reading
+     * GIF (only first frame), PNG, JPEG, BMP, WBMP.
+     *
+     * @param path the path to the file
+     * @param width the desired width of the image
+     * @param height the desired height of the image
+     * @return a buffered image
+     */
+    public static BufferedImage storedImage(String path, int width, int height) {
+        try {
+            final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+            img.createGraphics().drawImage(ImageIO.read(ResourceIO
+                    .storedFile(path)), 0, 0, width, height, null);
+            return img;
+        } catch (IOException ex) {
+            Logger.getLogger(ResourceIO.class.getName())
+                    .log(Level.SEVERE, null, ex);
+            return DEFAULT_IMAGE;
+        }
+    }
+
+    /**
      * Gets the data of a system file as an array of lines.
      *
      * @param path the path to the file
      * @return an array of strings that contains the data of the file
      */
     public static String[] storedArray(String path) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(ResourceIO
+        try ( BufferedReader reader = new BufferedReader(new FileReader(ResourceIO
                 .storedFile(path)))) {
 
             Object[] lines = reader.lines().toArray();
@@ -149,7 +193,7 @@ public class ResourceIO {
      */
     public static StringBuilder storedData(String path) {
         final StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
+        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
                 .resourceStream(path)))) {
 
             while (reader.ready()) {
@@ -180,7 +224,7 @@ public class ResourceIO {
             if (!createFile(file))
                 return false;
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try ( BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == null)
@@ -195,7 +239,8 @@ public class ResourceIO {
             return true;
 
         } catch (IOException ex) {
-            Logger.getLogger(ResourceIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ResourceIO.class.getName())
+                    .log(Level.SEVERE, null, ex);
             return false;
         }
     }
@@ -216,21 +261,24 @@ public class ResourceIO {
             if (!createFile(file))
                 return false;
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try ( BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(data.toString());
             return true;
 
         } catch (IOException ex) {
-            Logger.getLogger(ResourceIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ResourceIO.class.getName())
+                    .log(Level.SEVERE, null, ex);
             return false;
         }
     }
 
     private static boolean createFile(File file) {
         try {
-            return (file.getParentFile() != null ? file.getParentFile().mkdirs() : true) && file.createNewFile();
+            return (file.getParentFile() != null ? file.getParentFile().mkdirs() : true) && file
+                    .createNewFile();
         } catch (IOException ex) {
-            Logger.getLogger(ResourceIO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ResourceIO.class.getName())
+                    .log(Level.SEVERE, null, ex);
             return false;
         }
     }
