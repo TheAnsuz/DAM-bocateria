@@ -1,9 +1,6 @@
 package amrv;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import org.amrvimag.bocateria.view.ViewWrapper;
 
 /**
  *
@@ -12,10 +9,7 @@ import org.amrvimag.bocateria.view.ViewWrapper;
 public class CustomComponentes {
  
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
-        FlatDarkLaf.setup();
-        ViewWrapper.setLookAndFeel("");
         
-        UIManager.set
     }
     
 }

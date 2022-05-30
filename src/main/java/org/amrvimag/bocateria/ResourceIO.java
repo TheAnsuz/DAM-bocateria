@@ -51,7 +51,7 @@ public class ResourceIO {
      */
     public static StringBuilder resourceData(String path) {
         final StringBuilder builder = new StringBuilder();
-        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
                 .resourceStream(path)))) {
 
             while (reader.ready()) {
@@ -74,7 +74,7 @@ public class ResourceIO {
      */
     public static String[] resourceArray(String path) {
 
-        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
                 .resourceStream(path)))) {
 
             Object[] lines = reader.lines().toArray();
@@ -114,12 +114,12 @@ public class ResourceIO {
      * @return a buffered image using the given image
      */
     public static BufferedImage resourceImage(String path, int width, int height) {
+        final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         try {
-            final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             img.createGraphics().drawImage(ImageIO.read(ResourceIO
                     .resourceStream(path)), 0, 0, width, height, null);
             return img;
-        } catch (IOException | NullPointerException ex) {
+        } catch (IOException | NullPointerException | IllegalArgumentException ex) {
             Logger.getLogger(ResourceIO.class.getName())
                     .log(Level.SEVERE, null, ex);
             return DEFAULT_IMAGE;
@@ -153,12 +153,12 @@ public class ResourceIO {
      * @return a buffered image
      */
     public static BufferedImage storedImage(String path, int width, int height) {
+        final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         try {
-            final BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             img.createGraphics().drawImage(ImageIO.read(ResourceIO
                     .storedFile(path)), 0, 0, width, height, null);
             return img;
-        } catch (IOException ex) {
+        } catch (IOException | IllegalArgumentException | NullPointerException ex) {
             Logger.getLogger(ResourceIO.class.getName())
                     .log(Level.SEVERE, null, ex);
             return DEFAULT_IMAGE;
@@ -172,7 +172,7 @@ public class ResourceIO {
      * @return an array of strings that contains the data of the file
      */
     public static String[] storedArray(String path) {
-        try ( BufferedReader reader = new BufferedReader(new FileReader(ResourceIO
+        try (BufferedReader reader = new BufferedReader(new FileReader(ResourceIO
                 .storedFile(path)))) {
 
             Object[] lines = reader.lines().toArray();
@@ -193,7 +193,7 @@ public class ResourceIO {
      */
     public static StringBuilder storedData(String path) {
         final StringBuilder builder = new StringBuilder();
-        try ( BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(ResourceIO
                 .resourceStream(path)))) {
 
             while (reader.ready()) {
@@ -224,7 +224,7 @@ public class ResourceIO {
             if (!createFile(file))
                 return false;
 
-        try ( BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
 
             for (int i = 0; i < array.length; i++) {
                 if (array[i] == null)
@@ -261,7 +261,7 @@ public class ResourceIO {
             if (!createFile(file))
                 return false;
 
-        try ( BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(data.toString());
             return true;
 

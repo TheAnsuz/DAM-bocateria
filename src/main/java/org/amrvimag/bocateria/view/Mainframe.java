@@ -1,8 +1,14 @@
 package org.amrvimag.bocateria.view;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.amrvimag.bocateria.Configuration;
-import org.amrvimag.bocateria.Launcher;
 import org.amrvimag.bocateria.ResourceIO;
 
 /**
@@ -17,10 +23,11 @@ public class Mainframe extends javax.swing.JFrame {
     public Mainframe() {
         initComponents();
         buttonConfiguration.setIcon(new ImageIcon(ResourceIO
-                .resourceImage("image/settings128.png",24,24)));
+                .resourceImage("image/settings.png", 24, 24)));
+
         super.setTitle(Configuration
                 .getDefaultConfig("aplication.name", "Mi tienda"));
-        super.setIconImage(ResourceIO.resourceImage("image/icon.png",32,32));
+        super.setIconImage(ResourceIO.resourceImage("image/icon.png", 32, 32));
         super.setMinimumSize(super.getSize());
         super.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         super.setMaximumSize(super.getSize());
@@ -43,19 +50,20 @@ public class Mainframe extends javax.swing.JFrame {
         jList1 = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        panelProducts = new javax.swing.JPanel();
+        panelScrollProduct = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        panelHeader.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelHeader.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
         panelHeader.setMaximumSize(new java.awt.Dimension(32767, 32));
         panelHeader.setMinimumSize(new java.awt.Dimension(383, 32));
         panelHeader.setPreferredSize(new java.awt.Dimension(383, 32));
 
         buttonEmployee.setText("${emplado}");
+        buttonEmployee.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
         buttonConfiguration.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         buttonConfiguration.setText("Configuración");
@@ -77,7 +85,7 @@ public class Mainframe extends javax.swing.JFrame {
                 .addComponent(buttonConfiguration, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        panelTicket.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelTicket.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
 
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -86,9 +94,9 @@ public class Mainframe extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Crear ticket");
 
-        jButton3.setText("jButton3");
+        jButton3.setText("Cancelar");
 
         javax.swing.GroupLayout panelTicketLayout = new javax.swing.GroupLayout(panelTicket);
         panelTicket.setLayout(panelTicketLayout);
@@ -116,33 +124,33 @@ public class Mainframe extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        panelProducts.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
 
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane3.setViewportView(jList2);
+        panelScrollProduct.setViewportView(jList2);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelProductsLayout = new javax.swing.GroupLayout(panelProducts);
+        panelProducts.setLayout(panelProductsLayout);
+        panelProductsLayout.setHorizontalGroup(
+            panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProductsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane3)
-                    .addComponent(jScrollPane2))
+                .addGroup(panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelScrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        panelProductsLayout.setVerticalGroup(
+            panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProductsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
+                .addComponent(panelScrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -157,7 +165,7 @@ public class Mainframe extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(panelProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -167,7 +175,7 @@ public class Mainframe extends javax.swing.JFrame {
                 .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -182,16 +190,26 @@ public class Mainframe extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel panelHeader;
+    private javax.swing.JPanel panelProducts;
+    private javax.swing.JScrollPane panelScrollProduct;
     private javax.swing.JPanel panelTicket;
     // End of variables declaration//GEN-END:variables
 
     public static void main(String[] args) {
-        Launcher.main(args);
-        new Mainframe().setVisible(true);
+        FlatDarculaLaf.setup();
+        FlatDarkLaf.setup();
+        FlatLightLaf.setup();
+        try {
+            //        Launcher.main(args);
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Mainframe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Mainframe frame = new Mainframe();
+        frame.setVisible(true);
     }
 }
