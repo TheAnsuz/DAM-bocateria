@@ -3,6 +3,9 @@ package org.amrvimag.bocateria.model.dao;
 import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -82,6 +85,16 @@ public class ProductosDAO {
         ResultSet rs = con.getMetaData().getPrimaryKeys(null, null, type);
         rs.next();
         return rs.getString(4);
+    }
+
+    public static boolean PRUEBA() throws SQLException, FileNotFoundException {
+        Connection con = ConnectionDB.getConnection();
+        String update = "UPDATE bebidas SET imagen=? WHERE id_bebida=1";
+        PreparedStatement pst = con.prepareStatement(update);
+        InputStream in = new FileInputStream("H:\\hola.png");
+        pst.setBlob(1, in);
+
+        return pst.executeUpdate() > 0;
     }
 
 }

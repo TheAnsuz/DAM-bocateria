@@ -8,6 +8,7 @@ import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.model.entity.Venta;
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 /**
@@ -19,6 +20,13 @@ public class Launcher {
     public static void main(String[] args) {
 
         ConnectionDB.createConnection("jdbc:mysql://localhost:3306/bocateria", "root", "");
+        try {
+            ProductosDAO.PRUEBA();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         try {
             if (ProductosDAO.addProducto("bocadillos", "BOCADISHO DE CHORISO MESI", -69)) System.out.println("Mesi insertado");
