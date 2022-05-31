@@ -3,15 +3,24 @@ package org.amrvimag.bocateria.view;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.ResourceIO;
+import org.amrvimag.bocateria.model.entity.Producto;
 
 /**
  *
@@ -24,44 +33,66 @@ public class Mainframe extends javax.swing.JFrame {
      */
     public Mainframe() {
         initComponents();
+        
         buttonConfiguration.setIcon(new ImageIcon(ResourceIO
                 .resourceImage("image/settings.png", 24, 24)));
 
         super.setTitle(Configuration
-                .getDefaultConfig("aplication.name", "Mi tienda"));
+                .getDefaultConfig("aplication.name", "Tienda Amogus"));
         super.setIconImage(ResourceIO.resourceImage("image/icon.png", 32, 32));
         super.setMinimumSize(super.getSize());
         super.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         super.setMaximumSize(super.getSize());
     }
 
-    private JButton selectedComponent = null;
+    private JToggleButton selectedProductTypeButton = null;
+    private final ButtonGroup productTypeGroup = new ButtonGroup();
+    private final List<ProductTypeEvent> productTypeEvents = new ArrayList<>();
 
-    public void setProductTypeContent(JButton... buttons) {
+    public List<ProductTypeEvent> getProductTypeEventList() {
+        return productTypeEvents;
+    }
+
+    public void setProductTypeContents(String[] types, ImageIcon[] images) {
         panelProductType.removeAll();
-        for (JButton comp : buttons) {
-            comp.addActionListener((ActionEvent e) -> {
-                if (comp.equals(selectedComponent))
-                    selectedComponent = null;
-                else
-                    selectedComponent = comp;
-                productTypeSelected(selectedComponent);
-            });
-            panelProductType.add(comp);
+        for (int i = 0; i < Math.min(types.length, images.length); i++) {
+            panelProductType.add(constructButton(types[i], images[i]));
         }
     }
 
-    public boolean hasSelectedProductType() {
-        return selectedComponent != null;
+    private JToggleButton constructButton(String text, Icon image) {
+        JToggleButton button = new JToggleButton(text, image);
+        button.setVerticalTextPosition(SwingConstants.BOTTOM);
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+
+        int size = panelProductType.getHeight() - ((FlowLayout) panelProductType
+                .getLayout()).getVgap() * 2;
+        button.setSize(size, size);
+        button.setPreferredSize(button.getSize());
+        productTypeGroup.add(button);
+        button.addActionListener((ActionEvent e) -> {
+            if (button.equals(selectedProductTypeButton))
+                selectedProductTypeButton = null;
+            else
+                selectedProductTypeButton = button;
+            
+            for (ProductTypeEvent event : productTypeEvents)
+                event.onTypeChange(button, selectedProductTypeButton != null);
+            
+        });
+
+        return button;
     }
 
-    public JButton getSelectedProductType() {
-        return selectedComponent;
-    }
+    public interface ProductTypeEvent {
 
-    public void productTypeSelected(JButton button) {
-        System.out.println(button);
+        void onTypeChange(JToggleButton clickedButton, boolean hasSelection);
+
     }
+    
+    private final DefaultListModel<Producto> productSelectListModel = new DefaultListModel<>();
+    private final DefaultListModel<Producto> productItemListModel = new DefaultListModel<>();
+    private final ProductSelectRenderer<Producto> productSelectRenderer = new ProductSelectRenderer<>();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -87,8 +118,6 @@ public class Mainframe extends javax.swing.JFrame {
         panelScrollProductType = new javax.swing.JScrollPane();
         panelProductType = new javax.swing.JPanel();
 
-        FormListener formListener = new FormListener();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelHeader.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
@@ -96,9 +125,11 @@ public class Mainframe extends javax.swing.JFrame {
         panelHeader.setMinimumSize(new java.awt.Dimension(383, 32));
         panelHeader.setPreferredSize(new java.awt.Dimension(383, 32));
 
+        buttonEmployee.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         buttonEmployee.setText("${emplado}");
         buttonEmployee.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
+        buttonConfiguration.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         buttonConfiguration.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         buttonConfiguration.setText("Configuración");
 
@@ -108,32 +139,32 @@ public class Mainframe extends javax.swing.JFrame {
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeaderLayout.createSequentialGroup()
                 .addComponent(buttonEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 609, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(buttonConfiguration)
                 .addContainerGap())
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(buttonEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(buttonConfiguration, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(buttonEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+            .addComponent(buttonConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         panelTicket.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
 
-        listItemView.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        listItemView.setModel(productItemListModel);
+        listItemView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listItemView.setCellRenderer(new ProductInfoRenderer<Producto>());
         panelScrollItemView.setViewportView(listItemView);
 
+        buttonPagarEfectivo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         buttonPagarEfectivo.setText("Pagar en efectivo");
-        buttonPagarEfectivo.addActionListener(formListener);
 
+        buttonCancelar.setBackground(new java.awt.Color(255, 102, 102));
+        buttonCancelar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        buttonCancelar.setForeground(new java.awt.Color(51, 51, 51));
         buttonCancelar.setText("Cancelar");
-        buttonCancelar.addActionListener(formListener);
 
+        buttonPagarTarjeta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         buttonPagarTarjeta.setText("Pagar con tarjeta");
 
         javax.swing.GroupLayout panelTicketLayout = new javax.swing.GroupLayout(panelTicket);
@@ -145,10 +176,11 @@ public class Mainframe extends javax.swing.JFrame {
                 .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelScrollItemView)
                     .addGroup(panelTicketLayout.createSequentialGroup()
-                        .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                            .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         panelTicketLayout.setVerticalGroup(
@@ -157,25 +189,30 @@ public class Mainframe extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(panelScrollItemView)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(panelTicketLayout.createSequentialGroup()
-                        .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTicketLayout.createSequentialGroup()
+                        .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonCancelar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         panelProducts.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
 
-        listItemSelect.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        listItemSelect.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        listItemSelect.setModel(productSelectListModel);
+        listItemSelect.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listItemSelect.setCellRenderer(productSelectRenderer);
         panelScrollProduct.setViewportView(listItemSelect);
 
-        panelProductType.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        panelScrollProductType.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        panelProductType.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        panelProductType.setMaximumSize(new java.awt.Dimension(32767, 200));
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout(java.awt.FlowLayout.LEFT);
+        flowLayout1.setAlignOnBaseline(true);
+        panelProductType.setLayout(flowLayout1);
         panelScrollProductType.setViewportView(panelProductType);
 
         javax.swing.GroupLayout panelProductsLayout = new javax.swing.GroupLayout(panelProducts);
@@ -186,16 +223,16 @@ public class Mainframe extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelScrollProductType)
-                    .addComponent(panelScrollProduct))
+                    .addComponent(panelScrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelProductsLayout.setVerticalGroup(
             panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProductsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelScrollProductType, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                .addComponent(panelScrollProductType, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelScrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelScrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -217,7 +254,7 @@ public class Mainframe extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -226,29 +263,7 @@ public class Mainframe extends javax.swing.JFrame {
         );
 
         pack();
-    }
-
-    // Code for dispatching events from components to event handlers.
-
-    private class FormListener implements java.awt.event.ActionListener {
-        FormListener() {}
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == buttonCancelar) {
-                Mainframe.this.buttonCancelarActionPerformed(evt);
-            }
-            else if (evt.getSource() == buttonPagarEfectivo) {
-                Mainframe.this.buttonPagarEfectivoActionPerformed(evt);
-            }
-        }
     }// </editor-fold>//GEN-END:initComponents
-
-    private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonCancelarActionPerformed
-
-    private void buttonPagarEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarEfectivoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonPagarEfectivoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCancelar;
@@ -256,8 +271,8 @@ public class Mainframe extends javax.swing.JFrame {
     private javax.swing.JLabel buttonEmployee;
     private javax.swing.JButton buttonPagarEfectivo;
     private javax.swing.JButton buttonPagarTarjeta;
-    private javax.swing.JList<String> listItemSelect;
-    private javax.swing.JList<String> listItemView;
+    private javax.swing.JList<Producto> listItemSelect;
+    private javax.swing.JList<Producto> listItemView;
     private javax.swing.JPanel panelHeader;
     private javax.swing.JPanel panelProductType;
     private javax.swing.JPanel panelProducts;
@@ -268,17 +283,45 @@ public class Mainframe extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public static void main(String[] args) {
-        FlatDarculaLaf.setup();
-        FlatDarkLaf.setup();
-        FlatLightLaf.setup();
+//        FlatDarculaLaf.setup();
+//        FlatDarkLaf.setup();
+//        FlatLightLaf.setup();
         try {
             //        Launcher.main(args);
             UIManager.setLookAndFeel(new FlatDarkLaf());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Mainframe.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Mainframe.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
 
         Mainframe frame = new Mainframe();
+
+        frame.setProductTypeContents(new String[]{
+            "Hola", "Amogus", "Sus", "69"
+        }, new ImageIcon[]{
+            new ImageIcon(ResourceIO.resourceImage("image/default.png", 96, 96)),
+            new ImageIcon(ResourceIO.resourceImage("image/icon.png", 96, 96)),
+            new ImageIcon(ResourceIO
+            .resourceImage("image/settings32.png", 96, 96)),
+            new ImageIcon(ResourceIO.resourceImage("image/settings.png", 96, 96))
+        });
+
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Cocaola", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de uwu", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Eneryeti", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        
+        frame.productItemListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productItemListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        frame.productItemListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
+        
         frame.setVisible(true);
     }
 }
