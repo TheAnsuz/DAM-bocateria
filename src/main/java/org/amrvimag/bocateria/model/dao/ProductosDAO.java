@@ -17,7 +17,7 @@ public class ProductosDAO {
      * @return The array of products present in that table
      * @throws SQLException
      */
-    public static Producto[] getProductos(Producto.Tipos type) throws SQLException {
+    public static Producto[] getProductos(Producto.Tipos type) throws SQLException, IOException {
         Connection con = ConnectionDB.getConnection();
         String query = "SELECT * FROM " + type.getNombre();
         PreparedStatement pst = con.prepareStatement(query);
@@ -27,7 +27,10 @@ public class ProductosDAO {
             int id = rs.getInt(1);
             String name = rs.getString(2);
             double price = rs.getDouble(3);
-            prodList.add(new Producto(type, id, name, price));
+            Blob b = rs.getBlob(4);
+            BufferedImage img = ImageIO.read(b.getBinaryStream());
+            System.out.println(img);
+            prodList.add(new Producto(type, id, name, price, img));
         }
 
         return prodList.toArray(new Producto[0]);
@@ -41,13 +44,14 @@ public class ProductosDAO {
      * @return Whether the operation was carried out successfully
      * @throws SQLException
      */
-    public static boolean addProducto(Producto.Tipos type, String name, double price) throws SQLException {
+    public static boolean addProducto(Producto.Tipos type, String name, double price, File img) throws SQLException, FileNotFoundException {
         Connection con = ConnectionDB.getConnection();
         String update = "INSERT INTO " + type.getNombre() + " ";
-        update += "VALUES(null, ?, ?)";
+        update += "VALUES(null, ?, ?, ?)";
         PreparedStatement pst = con.prepareStatement(update);
         pst.setString(1, name);
         pst.setDouble(2, price);
+        pst.setBlob(3, new FileInputStream(img));
 
         return pst.executeUpdate() > 0;
     }
@@ -84,6 +88,7 @@ public class ProductosDAO {
         return rs.getString(4);
     }
 
+    /*
     public static boolean PRUEBA() throws SQLException, FileNotFoundException {
         Connection con = ConnectionDB.getConnection();
         String update = "UPDATE bocadillos SET imagen=? WHERE id_bocadillo=6";
@@ -100,15 +105,8 @@ public class ProductosDAO {
         PreparedStatement pst = con.prepareStatement(update);
         ResultSet rs = pst.executeQuery();
         rs.next();
-        Blob b = rs.getBlob(1);
-        InputStream in = b.getBinaryStream();
-        try {
-            BufferedImage img = ImageIO.read(in);
-            return img;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         return null;
-    }
+    }*/
 
 }

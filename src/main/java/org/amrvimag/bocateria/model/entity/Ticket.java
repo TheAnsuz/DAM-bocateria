@@ -52,6 +52,7 @@ public class Ticket {
         ticket.append(String.format("%28s %n", "Bocatería Amogus"));
         ticket.append("=======================================\n");
         ticket.append("Le atendió: ").append(employee).append("\n");
+        ticket.append("ID: ").append(id).append("\n");
         ticket.append("***************************************\n\n");
         ticket.append("Producto              Cant.     Precio\n");
         ticket.append("--------              -----     -------\n");

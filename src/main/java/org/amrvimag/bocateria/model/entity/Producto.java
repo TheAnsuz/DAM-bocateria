@@ -1,8 +1,7 @@
 package org.amrvimag.bocateria.model.entity;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Producto {
 
@@ -10,12 +9,14 @@ public class Producto {
     private final int id;
     private String name;
     private double price;
+    private BufferedImage img;
 
-    public Producto(Producto.Tipos type, int id, String name, double price) {
+    public Producto(Producto.Tipos type, int id, String name, double price, BufferedImage img) {
         this.type = type;
         this.id = id;
         this.name = name;
         this.price = price;
+        this.img = img;
     }
 
     public Producto.Tipos getType() {
@@ -40,6 +41,14 @@ public class Producto {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public BufferedImage getImg() {
+        return img;
+    }
+
+    public void setImg(BufferedImage img) {
+        this.img = img;
     }
 
     @Override

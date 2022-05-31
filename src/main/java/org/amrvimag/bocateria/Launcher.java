@@ -11,6 +11,7 @@ import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public class Launcher {
     public static void main(String[] args) {
 
         ConnectionDB.createConnection("jdbc:mysql://localhost:3306/bocateria", "root", "");
-        try {
+        /*try {
             //ProductosDAO.PRUEBA();
             JFrame j = new JFrame();
             j.setIconImage(ProductosDAO.PRUEBAGET());
@@ -44,11 +45,23 @@ public class Launcher {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
         Producto[] prods = null;
 
+        JFrame j = new JFrame();
+        j.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        j.setSize(800, 800);
+
+        JButton btt = new JButton();
+        btt.setLocation(40, 40);
+        btt.setSize(40, 20);
+        btt.setVisible(true);
+        j.add(btt);
+        j.setVisible(true);
+
         try {
+
             //if (ProductosDAO.addProducto(Producto.Tipos.BOCADILLO, "BOCADISHO DE CHORISO MESI", -69)) System.out.println("Mesi insertado");
             prods = ProductosDAO.getProductos(Producto.Tipos.BOCADILLO);
             //Producto mesi = null;
@@ -56,8 +69,9 @@ public class Launcher {
                 //if (prod.getName().equals("BOCADISHO DE CHORISO MESI")) mesi = prod;
                 System.out.println(prod);
             }
+            btt.setIcon(new ImageIcon(prods[1].getImg()));
             //if (ProductosDAO.removeProducto(mesi)) System.out.println("Mesi borrado");
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException | IOException e) { e.printStackTrace(); }
 
         System.out.println();
 
