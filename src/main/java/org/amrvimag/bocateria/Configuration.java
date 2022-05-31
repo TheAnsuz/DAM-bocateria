@@ -1,5 +1,6 @@
 package org.amrvimag.bocateria;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,15 @@ public class Configuration {
             }
 
         });
+    }
+
+    /**
+     * Checks if the configuration file exists and can be read.
+     *
+     * @return true if the configuration file exists, false otherwise
+     */
+    public static boolean exists() {
+        return new File(FILE).canRead();
     }
 
     /**
@@ -244,6 +254,9 @@ public class Configuration {
      * @return true if the configuration was saved succesfully.
      */
     public static boolean save() {
+        if (values.isEmpty())
+            return false;
+
         String[] data = new String[values.size()];
         int index = 0;
         for (Entry<String, String> entry : values.entrySet()) {
