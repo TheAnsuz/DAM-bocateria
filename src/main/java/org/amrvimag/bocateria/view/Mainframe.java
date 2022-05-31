@@ -3,9 +3,11 @@ package org.amrvimag.bocateria.view;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.amrvimag.bocateria.Configuration;
@@ -33,6 +35,34 @@ public class Mainframe extends javax.swing.JFrame {
         super.setMaximumSize(super.getSize());
     }
 
+    private JButton selectedComponent = null;
+
+    public void setProductTypeContent(JButton... buttons) {
+        panelProductType.removeAll();
+        for (JButton comp : buttons) {
+            comp.addActionListener((ActionEvent e) -> {
+                if (comp.equals(selectedComponent))
+                    selectedComponent = null;
+                else
+                    selectedComponent = comp;
+                productTypeSelected(selectedComponent);
+            });
+            panelProductType.add(comp);
+        }
+    }
+
+    public boolean hasSelectedProductType() {
+        return selectedComponent != null;
+    }
+
+    public JButton getSelectedProductType() {
+        return selectedComponent;
+    }
+
+    public void productTypeSelected(JButton button) {
+        System.out.println(button);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,14 +76,18 @@ public class Mainframe extends javax.swing.JFrame {
         buttonEmployee = new javax.swing.JLabel();
         buttonConfiguration = new javax.swing.JLabel();
         panelTicket = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        panelScrollItemView = new javax.swing.JScrollPane();
+        listItemView = new javax.swing.JList<>();
+        buttonPagarEfectivo = new javax.swing.JButton();
+        buttonCancelar = new javax.swing.JButton();
+        buttonPagarTarjeta = new javax.swing.JButton();
         panelProducts = new javax.swing.JPanel();
         panelScrollProduct = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        listItemSelect = new javax.swing.JList<>();
+        panelScrollProductType = new javax.swing.JScrollPane();
+        panelProductType = new javax.swing.JPanel();
+
+        FormListener formListener = new FormListener();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -74,7 +108,7 @@ public class Mainframe extends javax.swing.JFrame {
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeaderLayout.createSequentialGroup()
                 .addComponent(buttonEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 609, Short.MAX_VALUE)
                 .addComponent(buttonConfiguration)
                 .addContainerGap())
         );
@@ -87,16 +121,20 @@ public class Mainframe extends javax.swing.JFrame {
 
         panelTicket.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        listItemView.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        panelScrollItemView.setViewportView(listItemView);
 
-        jButton1.setText("Crear ticket");
+        buttonPagarEfectivo.setText("Pagar en efectivo");
+        buttonPagarEfectivo.addActionListener(formListener);
 
-        jButton3.setText("Cancelar");
+        buttonCancelar.setText("Cancelar");
+        buttonCancelar.addActionListener(formListener);
+
+        buttonPagarTarjeta.setText("Pagar con tarjeta");
 
         javax.swing.GroupLayout panelTicketLayout = new javax.swing.GroupLayout(panelTicket);
         panelTicket.setLayout(panelTicketLayout);
@@ -105,52 +143,59 @@ public class Mainframe extends javax.swing.JFrame {
             .addGroup(panelTicketLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(panelScrollItemView)
                     .addGroup(panelTicketLayout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(buttonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         panelTicketLayout.setVerticalGroup(
             panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTicketLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(panelScrollItemView)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelTicketLayout.createSequentialGroup()
+                        .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         panelProducts.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
 
-        jList2.setModel(new javax.swing.AbstractListModel<String>() {
+        listItemSelect.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        panelScrollProduct.setViewportView(jList2);
+        panelScrollProduct.setViewportView(listItemSelect);
+
+        panelProductType.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        panelScrollProductType.setViewportView(panelProductType);
 
         javax.swing.GroupLayout panelProductsLayout = new javax.swing.GroupLayout(panelProducts);
         panelProducts.setLayout(panelProductsLayout);
         panelProductsLayout.setHorizontalGroup(
             panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelProductsLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelProductsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelScrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                .addGroup(panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelScrollProductType)
+                    .addComponent(panelScrollProduct))
                 .addContainerGap())
         );
         panelProductsLayout.setVerticalGroup(
             panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProductsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addComponent(panelScrollProductType, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelScrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelScrollProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -161,7 +206,7 @@ public class Mainframe extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
+                    .addComponent(panelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelTicket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -181,20 +226,44 @@ public class Mainframe extends javax.swing.JFrame {
         );
 
         pack();
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == buttonCancelar) {
+                Mainframe.this.buttonCancelarActionPerformed(evt);
+            }
+            else if (evt.getSource() == buttonPagarEfectivo) {
+                Mainframe.this.buttonPagarEfectivoActionPerformed(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonCancelarActionPerformed
+
+    private void buttonPagarEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarEfectivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonPagarEfectivoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonCancelar;
     private javax.swing.JLabel buttonConfiguration;
     private javax.swing.JLabel buttonEmployee;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton buttonPagarEfectivo;
+    private javax.swing.JButton buttonPagarTarjeta;
+    private javax.swing.JList<String> listItemSelect;
+    private javax.swing.JList<String> listItemView;
     private javax.swing.JPanel panelHeader;
+    private javax.swing.JPanel panelProductType;
     private javax.swing.JPanel panelProducts;
+    private javax.swing.JScrollPane panelScrollItemView;
     private javax.swing.JScrollPane panelScrollProduct;
+    private javax.swing.JScrollPane panelScrollProductType;
     private javax.swing.JPanel panelTicket;
     // End of variables declaration//GEN-END:variables
 
