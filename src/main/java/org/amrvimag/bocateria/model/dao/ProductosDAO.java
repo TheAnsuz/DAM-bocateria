@@ -3,13 +3,10 @@ package org.amrvimag.bocateria.model.dao;
 import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class ProductosDAO {
@@ -20,9 +17,9 @@ public class ProductosDAO {
      * @return The array of products present in that table
      * @throws SQLException
      */
-    public static Producto[] getProductos(String type) throws SQLException {
+    public static Producto[] getProductos(Producto.Tipos type) throws SQLException {
         Connection con = ConnectionDB.getConnection();
-        String query = "SELECT * FROM " + type;
+        String query = "SELECT * FROM " + type.getNombre();
         PreparedStatement pst = con.prepareStatement(query);
         ResultSet rs = pst.executeQuery();
         ArrayList<Producto> prodList = new ArrayList<>();
@@ -44,9 +41,9 @@ public class ProductosDAO {
      * @return Whether the operation was carried out successfully
      * @throws SQLException
      */
-    public static boolean addProducto(String type, String name, double price) throws SQLException {
+    public static boolean addProducto(Producto.Tipos type, String name, double price) throws SQLException {
         Connection con = ConnectionDB.getConnection();
-        String update = "INSERT INTO " + type + " ";
+        String update = "INSERT INTO " + type.getNombre() + " ";
         update += "VALUES(null, ?, ?)";
         PreparedStatement pst = con.prepareStatement(update);
         pst.setString(1, name);
@@ -80,21 +77,38 @@ public class ProductosDAO {
      * @return The name of the primary key column
      * @throws SQLException
      */
-    private static String getTablePK(String type) throws SQLException {
+    private static String getTablePK(Producto.Tipos type) throws SQLException {
         Connection con = ConnectionDB.getConnection();
-        ResultSet rs = con.getMetaData().getPrimaryKeys(null, null, type);
+        ResultSet rs = con.getMetaData().getPrimaryKeys(null, null, type.getNombre());
         rs.next();
         return rs.getString(4);
     }
 
     public static boolean PRUEBA() throws SQLException, FileNotFoundException {
         Connection con = ConnectionDB.getConnection();
-        String update = "UPDATE bebidas SET imagen=? WHERE id_bebida=1";
+        String update = "UPDATE bocadillos SET imagen=? WHERE id_bocadillo=6";
         PreparedStatement pst = con.prepareStatement(update);
-        InputStream in = new FileInputStream("H:\\hola.png");
+        InputStream in = new FileInputStream("F:\\botella.png");
         pst.setBlob(1, in);
 
         return pst.executeUpdate() > 0;
+    }
+
+    public static BufferedImage PRUEBAGET() throws SQLException, FileNotFoundException {
+        Connection con = ConnectionDB.getConnection();
+        String update = "SELECT imagen FROM bocadillos WHERE id_bocadillo=6";
+        PreparedStatement pst = con.prepareStatement(update);
+        ResultSet rs = pst.executeQuery();
+        rs.next();
+        Blob b = rs.getBlob(1);
+        InputStream in = b.getBinaryStream();
+        try {
+            BufferedImage img = ImageIO.read(in);
+            return img;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

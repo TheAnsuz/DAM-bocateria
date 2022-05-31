@@ -4,10 +4,8 @@ import org.amrvimag.bocateria.model.entity.Empleado;
 import org.amrvimag.bocateria.model.entity.Venta;
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,7 +24,7 @@ public class VentasDAO {
         ArrayList<Venta> ventasList = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt(1);
-            Date date = rs.getDate(2);
+            Timestamp date = rs.getTimestamp(2);
             String idEmp = rs.getString(3);
             double total = rs.getDouble(4);
             ventasList.add(new Venta(id, date, EmpleadosDAO.getEmp(idEmp), total));
@@ -46,7 +44,7 @@ public class VentasDAO {
         Connection con = ConnectionDB.getConnection();
         String update = "INSERT INTO ventas VALUES(null, ?, ?, ?)";
         PreparedStatement pst = con.prepareStatement(update);
-        pst.setDate(1, new java.sql.Date(new Date().getTime()));
+        pst.setTimestamp(1, new java.sql.Timestamp(new Date().getTime()));
         pst.setString(2, emp.getId());
         pst.setDouble(3, total);
 
