@@ -1,7 +1,6 @@
 package org.amrvimag.bocateria.view;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
+import java.awt.event.ActionListener;
 
 /**
  *
@@ -19,12 +18,23 @@ public class ViewWrapper {
     }
 
     private final Mainframe mainframe;
-    private final ConfigurationDialog configuration;
+    private final ConfigurationDialog configurationDialog;
+    private final EmpleadoDialog empleadoDialog;
+    private final ErrorDialog errorDialog;
 
     private ViewWrapper() {
-        FlatDarkLaf.setup();
-        FlatLightLaf.setup();
         mainframe = new Mainframe();
-        configuration = new ConfigurationDialog(mainframe, true);
+        configurationDialog = new ConfigurationDialog(mainframe, true);
+        empleadoDialog = new EmpleadoDialog(mainframe, true);
+        errorDialog = new ErrorDialog(mainframe, true);
+    }
+    
+    public void showError(Exception exception) {
+        errorDialog.setError(exception);
+        errorDialog.setVisible(true);
+    }
+
+    public void addCancelButtonListener(ActionListener list) {
+
     }
 }

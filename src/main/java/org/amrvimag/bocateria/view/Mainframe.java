@@ -2,9 +2,13 @@ package org.amrvimag.bocateria.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
@@ -42,6 +46,7 @@ public class Mainframe extends javax.swing.JFrame {
         super.setMaximumSize(super.getSize());
     }
 
+    private final Map<Producto.Tipos, JToggleButton> buttonTypes = new HashMap<>();
     private JToggleButton selectedProductTypeButton = null;
     private final ButtonGroup productTypeGroup = new ButtonGroup();
     private final List<ProductTypeEvent> productTypeEvents = new ArrayList<>();
@@ -50,11 +55,16 @@ public class Mainframe extends javax.swing.JFrame {
         return productTypeEvents;
     }
 
-    public void setProductTypeContents(String[] types, ImageIcon[] images) {
+    public void addType(Producto.Tipos type, Image img) {
+        JToggleButton button = constructButton(type.getNombre(), new ImageIcon(img));
+        buttonTypes.put(type, button);
+        panelProductType.add(button);
+    }
+
+    public void clearTypes() {
+        buttonTypes.clear();
         panelProductType.removeAll();
-        for (int i = 0; i < Math.min(types.length, images.length); i++) {
-            panelProductType.add(constructButton(types[i], images[i]));
-        }
+        selectedProductTypeButton = null;
     }
 
     private JToggleButton constructButton(String text, Icon image) {
@@ -74,16 +84,24 @@ public class Mainframe extends javax.swing.JFrame {
                 selectedProductTypeButton = button;
 
             for (ProductTypeEvent event : productTypeEvents)
-                event.onTypeChange(button, selectedProductTypeButton != null);
+                event.onTypeChange(button, getKeyByValue(button), selectedProductTypeButton != null);
 
         });
 
         return button;
     }
 
+    private Producto.Tipos getKeyByValue(JToggleButton button) {
+        for (Entry<Producto.Tipos, JToggleButton> entry : buttonTypes.entrySet()) {
+            if (entry.getValue().equals(button))
+                return entry.getKey();
+        }
+        return Producto.Tipos.OTRO;
+    }
+
     public interface ProductTypeEvent {
 
-        void onTypeChange(JToggleButton clickedButton, boolean hasSelection);
+        void onTypeChange(JToggleButton clickedButton, Producto.Tipos tipo, boolean hasSelection);
 
     }
 
@@ -263,11 +281,11 @@ public class Mainframe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonCancelar;
-    private javax.swing.JLabel buttonConfiguration;
-    private javax.swing.JLabel buttonEmployee;
-    private javax.swing.JButton buttonPagarEfectivo;
-    private javax.swing.JButton buttonPagarTarjeta;
+    protected javax.swing.JButton buttonCancelar;
+    protected javax.swing.JLabel buttonConfiguration;
+    protected javax.swing.JLabel buttonEmployee;
+    protected javax.swing.JButton buttonPagarEfectivo;
+    protected javax.swing.JButton buttonPagarTarjeta;
     private javax.swing.JList<Producto> listItemSelect;
     private javax.swing.JList<Producto> listItemView;
     private javax.swing.JPanel panelHeader;
@@ -293,14 +311,10 @@ public class Mainframe extends javax.swing.JFrame {
 
         Mainframe frame = new Mainframe();
 
-        frame.setProductTypeContents(new String[]{
-            "Hola", "Amogus", "Sus", "69"
-        }, new ImageIcon[]{
-            new ImageIcon(ResourceIO.resourceImage("image/default.png", 96, 96)),
-            new ImageIcon(ResourceIO.resourceImage("image/icon.png", 96, 96)),
-            new ImageIcon(ResourceIO
-            .resourceImage("image/settings.png", 96, 96)),
-            new ImageIcon(ResourceIO.resourceImage("image/settings.png", 96, 96))
+        frame.addType(Producto.Tipos.OTRO, ResourceIO.resourceImage("image/icon.png", 64, 64));
+
+        frame.getProductTypeEventList().add((ProductTypeEvent) (JToggleButton clickedButton, Producto.Tipos tipo, boolean hasSelection) -> {
+            System.out.println(hasSelection + "? > " + tipo.getNombre());
         });
 
         final int size = 64;

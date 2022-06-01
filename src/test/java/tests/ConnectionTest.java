@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.model.dao.EmpleadosDAO;
 import org.amrvimag.bocateria.model.dao.ProductosDAO;
 import org.amrvimag.bocateria.model.dao.VentasDAO;
@@ -23,11 +24,11 @@ public class ConnectionTest {
     public static void main(String[] args) {
 
         ConnectionDB
-                .createConnection("jdbc:mysql://localhost:3306/bocateria", "root", "");
+                .createConnection(Configuration.getConfig(""), "root", "");
 
         try {
             if (ProductosDAO
-                    .addProducto(Producto.Tipos.BOCADILLO, "BOCADISHO DE CHORISO MESI", -69,new File("")))
+                    .addProducto(Producto.Tipos.BOCADILLO, "BOCADISHO DE CHORISO MESI", -69, new File("")))
                 System.out.println("Mesi insertado");
             Producto[] prods = ProductosDAO.getProductos(Producto.Tipos.BEBIDA);
             Producto mesi = null;
