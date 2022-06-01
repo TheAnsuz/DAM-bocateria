@@ -95,8 +95,19 @@ public class ResourceIO {
      * @return a buffered image using the given image
      */
     public static BufferedImage resourceImage(String path) {
+        return streamImage(ResourceIO.resourceStream(path));
+    }
+
+    /**
+     * Obtains an image given the data input stream directly.
+     *
+     * @param stream the data stream to be read
+     * @return a buffered image containing the stream or a default image if any
+     * exception occurs
+     */
+    public static BufferedImage streamImage(InputStream stream) {
         try {
-            return ImageIO.read(ResourceIO.resourceStream(path));
+            return ImageIO.read(stream);
         } catch (IOException | NullPointerException ex) {
             Logger.getLogger(ResourceIO.class.getName())
                     .log(Level.SEVERE, null, ex);
