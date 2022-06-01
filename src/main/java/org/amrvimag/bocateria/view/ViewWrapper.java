@@ -33,6 +33,26 @@ public class ViewWrapper {
         errorDialog.setError(exception);
         errorDialog.setVisible(true);
     }
+    
+    public boolean seesError() {
+        return errorDialog.isVisible();
+    }
+    
+    public void showConfiguration() {
+        configurationDialog.setVisible(true);
+    }
+    
+    public boolean seesConfiguration() {
+        return configurationDialog.isVisible();
+    }
+    
+    public void showEmpleadoSelector() {
+        empleadoDialog.setVisible(true);
+    }
+    
+    public boolean seesEmpleadoSelector() {
+        return empleadoDialog.isVisible();
+    }
 
     public void addCancelButtonListener(ActionListener list) {
 
