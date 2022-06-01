@@ -26,7 +26,7 @@ public class ViewWrapper {
         mainframe = new Mainframe();
         configurationDialog = new ConfigurationDialog(mainframe, true);
         empleadoDialog = new EmpleadoDialog(mainframe, true);
-        errorDialog = new ErrorDialog(mainframe, true);
+        errorDialog = new ErrorDialog(mainframe);
     }
     
     public void showError(Exception exception) {

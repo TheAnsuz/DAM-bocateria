@@ -4,7 +4,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import org.amrvimag.bocateria.ResourceIO;
 
 /**
@@ -15,12 +14,12 @@ public class ErrorDialog extends javax.swing.JDialog {
 
     private Exception exception;
 
-    public ErrorDialog(JFrame parent, boolean modal) {
-        super(parent, modal);
-    }
-
     public void setError(Exception exception) {
         this.exception = exception;
+        this.textDescription.setText(splitIntoLines(exception
+                .getLocalizedMessage(), 80));
+        this.textLog.setText(generateTrace(exception));
+        this.pack();
     }
 
     /**
@@ -28,21 +27,20 @@ public class ErrorDialog extends javax.swing.JDialog {
      * to them and wont let the user do anything until they are closed
      *
      * @param parent the root of this dialog (parent window)
-     * @param exception the log itself
      */
-    public ErrorDialog(java.awt.Frame parent, Exception exception) {
+    public ErrorDialog(java.awt.Frame parent) {
         super(parent, true);
-        this.exception = exception;
-        super.setTitle("Error: " + exception.getClass().getSimpleName());
+        this.exception = new Exception("Undefined exception");
         initComponents();
+        super.setTitle("Error: " + exception.getClass().getSimpleName());
         this.textDescription.setText(splitIntoLines(exception
                 .getLocalizedMessage(), 80));
         super.pack();
-        super.setLocationRelativeTo(parent);
+//        super.setLocationRelativeTo(parent);
         super.setResizable(false);
         super.getRootPane().setDefaultButton(buttonOK);
         super.setIconImage(ResourceIO.resourceImage("image/warning.png"));
-        super.setVisible(true);
+//        super.setVisible(true);
     }
 
     private static String generateTrace(Exception exception) {
@@ -173,4 +171,48 @@ public class ErrorDialog extends javax.swing.JDialog {
     private javax.swing.JLabel textDescription;
     private javax.swing.JTextArea textLog;
     // End of variables declaration//GEN-END:variables
+
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
+                    .getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ConfigurationDialog.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ConfigurationDialog.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ConfigurationDialog.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ConfigurationDialog.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                ErrorDialog dialog = new ErrorDialog(new javax.swing.JFrame());
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
 }
