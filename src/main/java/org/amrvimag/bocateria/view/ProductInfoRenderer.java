@@ -15,20 +15,18 @@ import org.amrvimag.bocateria.model.entity.Producto;
 public class ProductInfoRenderer<E extends Producto> extends ProductInfoPanel implements ListCellRenderer<Producto> {
 
     private final Color defaultColor;
-    
+
     public ProductInfoRenderer() {
         super();
         defaultColor = super.getBackground();
     }
 
-    
-    
     @Override
     public Component getListCellRendererComponent(JList<? extends Producto> list, Producto value, int index, boolean isSelected, boolean cellHasFocus) {
         super.setBackground(index % 2 == 0 ? defaultColor.brighter() : defaultColor.darker());
-        super.setImage(ResourceIO.resourceImage("image/icon.png", 32, 32));
+        super.setImage(value.getImg() == null ? ResourceIO.resourceImage("image/undefined.png", 32, 32) : value.getImg());
         super.setPrimaryText(value.getName());
-        super.setSecondaryText(value.getType());
+        super.setSecondaryText(value.getType().getNombre());
         super.setDetailText(value.getPrice() + "€");
 
         return this;

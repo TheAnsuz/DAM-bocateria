@@ -5,9 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -57,8 +54,7 @@ public class ProductSelectRenderer<E extends Producto> extends JPanel implements
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Producto> list, Producto value, int index, boolean isSelected, boolean cellHasFocus) {
-        productLabel.setIcon(new ImageIcon(ResourceIO
-                .resourceImage("image/default.png", 96, 96)));
+        productLabel.setIcon(new ImageIcon(value.getImg() == null ? ResourceIO.resourceImage("image/undefined.png", 32, 32) : value.getImg()));
         productLabel.setText(value.getName());
         productoInfo.setText(value.getPrice() + "€");
         if (cellHasFocus) {

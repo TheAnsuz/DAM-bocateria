@@ -1,8 +1,6 @@
 package org.amrvimag.bocateria.view;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.ResourceIO;
 import org.amrvimag.bocateria.model.entity.Producto;
@@ -33,7 +30,7 @@ public class Mainframe extends javax.swing.JFrame {
      */
     public Mainframe() {
         initComponents();
-        
+
         buttonConfiguration.setIcon(new ImageIcon(ResourceIO
                 .resourceImage("image/settings.png", 24, 24)));
 
@@ -75,10 +72,10 @@ public class Mainframe extends javax.swing.JFrame {
                 selectedProductTypeButton = null;
             else
                 selectedProductTypeButton = button;
-            
+
             for (ProductTypeEvent event : productTypeEvents)
                 event.onTypeChange(button, selectedProductTypeButton != null);
-            
+
         });
 
         return button;
@@ -89,7 +86,7 @@ public class Mainframe extends javax.swing.JFrame {
         void onTypeChange(JToggleButton clickedButton, boolean hasSelection);
 
     }
-    
+
     private final DefaultListModel<Producto> productSelectListModel = new DefaultListModel<>();
     private final DefaultListModel<Producto> productItemListModel = new DefaultListModel<>();
     private final ProductSelectRenderer<Producto> productSelectRenderer = new ProductSelectRenderer<>();
@@ -302,26 +299,27 @@ public class Mainframe extends javax.swing.JFrame {
             new ImageIcon(ResourceIO.resourceImage("image/default.png", 96, 96)),
             new ImageIcon(ResourceIO.resourceImage("image/icon.png", 96, 96)),
             new ImageIcon(ResourceIO
-            .resourceImage("image/settings32.png", 96, 96)),
+            .resourceImage("image/settings.png", 96, 96)),
             new ImageIcon(ResourceIO.resourceImage("image/settings.png", 96, 96))
         });
 
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Cocaola", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de uwu", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Eneryeti", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productSelectListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        
-        frame.productItemListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productItemListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        frame.productItemListModel.addElement(new Producto("Agua", 12, "Agua de chica gamer", 14.49));
-        
+        final int size = 64;
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Cocaola", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de uwu", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Eneryeti", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+
+        frame.productItemListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size / 2, size / 2)));
+        frame.productItemListModel.addElement(new Producto(Producto.Tipos.OTRO, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size / 2, size / 2)));
+        frame.productItemListModel.addElement(new Producto(Producto.Tipos.BOCADILLO, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size / 2, size / 2)));
+
         frame.setVisible(true);
     }
 }

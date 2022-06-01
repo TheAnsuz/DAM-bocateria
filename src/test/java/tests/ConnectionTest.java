@@ -1,6 +1,11 @@
 package tests;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.amrvimag.bocateria.model.dao.EmpleadosDAO;
 import org.amrvimag.bocateria.model.dao.ProductosDAO;
 import org.amrvimag.bocateria.model.dao.VentasDAO;
@@ -22,9 +27,9 @@ public class ConnectionTest {
 
         try {
             if (ProductosDAO
-                    .addProducto("bocadillos", "BOCADISHO DE CHORISO MESI", -69))
+                    .addProducto(Producto.Tipos.BOCADILLO, "BOCADISHO DE CHORISO MESI", -69,new File("")))
                 System.out.println("Mesi insertado");
-            Producto[] prods = ProductosDAO.getProductos("bocadillos");
+            Producto[] prods = ProductosDAO.getProductos(Producto.Tipos.BEBIDA);
             Producto mesi = null;
             for (Producto prod : prods) {
                 if (prod.getName().equals("BOCADISHO DE CHORISO MESI"))
@@ -35,6 +40,10 @@ public class ConnectionTest {
                 System.out.println("Mesi borrado");
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ConnectionTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ConnectionTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         System.out.println();
