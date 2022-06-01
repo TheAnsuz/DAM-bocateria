@@ -85,7 +85,7 @@ public class ErrorDialog extends javax.swing.JDialog {
         buttonOK.setDefaultCapable(true);
         buttonOK.requestFocus();
 
-        buttonCopy.setText("Copy to clipboard");
+        buttonCopy.setText("Copiar al portapapeles");
         buttonCopy.setFocusable(false);
         buttonCopy.addActionListener(formListener);
 
