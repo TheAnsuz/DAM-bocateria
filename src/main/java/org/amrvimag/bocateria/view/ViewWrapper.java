@@ -3,6 +3,10 @@ package org.amrvimag.bocateria.view;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -15,6 +19,8 @@ import org.amrvimag.bocateria.Configuration;
  */
 public class ViewWrapper {
 
+    private final DecimalFormat numberFormatter = new DecimalFormat("#,##0.00 \u00A4");
+    private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static ViewWrapper wrapper;
     private static String selectedLookAndFeel = "System Default";
     private static final String[] supportedLookAndFeels = new String[]{
@@ -85,16 +91,26 @@ public class ViewWrapper {
     private final ConfigurationDialog configurationDialog;
     private final EmpleadoDialog empleadoDialog;
     private final ErrorDialog errorDialog;
+    private final VentasDialog ventasDialog;
 
     private ViewWrapper() {
         mainframe = new Mainframe();
         configurationDialog = new ConfigurationDialog(mainframe, true);
         empleadoDialog = new EmpleadoDialog(mainframe, true);
         errorDialog = new ErrorDialog(mainframe);
+        ventasDialog = new VentasDialog(mainframe, true);
         validateConfig();
         mainframe.setVisible(true);
     }
 
+    public String formatTime(TemporalAccessor date) {
+        return timeFormatter.format(date);
+    }
+    
+    public String formatNumber(Number number) {
+        return numberFormatter.format(number);
+    }
+    
     private void validateConfig() {
         if (!Configuration.exists())
             showConfiguration();
@@ -126,6 +142,15 @@ public class ViewWrapper {
 
     public boolean seesEmpleadoSelector() {
         return empleadoDialog.isVisible();
+    }
+    
+    public void showVentas() {
+        ventasDialog.setLocationRelativeTo(mainframe);
+        ventasDialog.setVisible(true);
+    }
+
+    public boolean seesVentasDialog() {
+        return ventasDialog.isVisible();
     }
 
 }

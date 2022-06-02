@@ -44,6 +44,7 @@ public final class Mainframe extends javax.swing.JFrame {
 
         buttonConfiguration.setIcon(new ImageIcon(ResourceIO
                 .resourceImage("image/settings.png", 24, 24)));
+        buttonVentas.setIcon(new ImageIcon(ResourceIO.resourceImage("image/sells.png", 24, 24)));
 
         super.setTitle(Configuration
                 .getDefaultConfig("aplication.name", "Tienda Amogus"));
@@ -128,12 +129,15 @@ public final class Mainframe extends javax.swing.JFrame {
         panelHeader = new javax.swing.JPanel();
         buttonEmployee = new javax.swing.JLabel();
         buttonConfiguration = new javax.swing.JLabel();
+        buttonVentas = new javax.swing.JLabel();
         panelTicket = new javax.swing.JPanel();
         panelScrollItemView = new javax.swing.JScrollPane();
         listItemView = new javax.swing.JList<>();
         buttonPagarEfectivo = new javax.swing.JButton();
         buttonCancelar = new javax.swing.JButton();
         buttonPagarTarjeta = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        textTotal = new javax.swing.JTextField();
         panelProducts = new javax.swing.JPanel();
         panelScrollProduct = new javax.swing.JScrollPane();
         listItemSelect = new javax.swing.JList<>();
@@ -161,6 +165,13 @@ public final class Mainframe extends javax.swing.JFrame {
         buttonConfiguration.setBorder(new javax.swing.border.LineBorder(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"), 1, true));
         buttonConfiguration.addMouseListener(formListener);
 
+        buttonVentas.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
+        buttonVentas.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        buttonVentas.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        buttonVentas.setText("Ventas ");
+        buttonVentas.setBorder(new javax.swing.border.LineBorder(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"), 1, true));
+        buttonVentas.addMouseListener(formListener);
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
@@ -168,6 +179,8 @@ public final class Mainframe extends javax.swing.JFrame {
             .addGroup(panelHeaderLayout.createSequentialGroup()
                 .addComponent(buttonEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonVentas)
+                .addGap(18, 18, 18)
                 .addComponent(buttonConfiguration)
                 .addGap(0, 0, 0))
         );
@@ -175,8 +188,9 @@ public final class Mainframe extends javax.swing.JFrame {
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeaderLayout.createSequentialGroup()
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(buttonConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
+                    .addComponent(buttonEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(buttonVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -202,6 +216,11 @@ public final class Mainframe extends javax.swing.JFrame {
         buttonPagarTarjeta.setText("Pagar con tarjeta");
         buttonPagarTarjeta.addActionListener(formListener);
 
+        jLabel1.setText("TOTAL:");
+
+        textTotal.setText("0");
+        textTotal.setEnabled(false);
+
         javax.swing.GroupLayout panelTicketLayout = new javax.swing.GroupLayout(panelTicket);
         panelTicket.setLayout(panelTicketLayout);
         panelTicketLayout.setHorizontalGroup(
@@ -215,7 +234,11 @@ public final class Mainframe extends javax.swing.JFrame {
                             .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                             .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)))
+                        .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                    .addGroup(panelTicketLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textTotal)))
                 .addContainerGap())
         );
         panelTicketLayout.setVerticalGroup(
@@ -223,6 +246,10 @@ public final class Mainframe extends javax.swing.JFrame {
             .addGroup(panelTicketLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelScrollItemView)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(textTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTicketLayout.createSequentialGroup()
@@ -324,6 +351,9 @@ public final class Mainframe extends javax.swing.JFrame {
             else if (evt.getSource() == buttonConfiguration) {
                 Mainframe.this.buttonConfigurationMouseClicked(evt);
             }
+            else if (evt.getSource() == buttonVentas) {
+                Mainframe.this.buttonVentasMouseClicked(evt);
+            }
         }
 
         public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -333,6 +363,9 @@ public final class Mainframe extends javax.swing.JFrame {
             else if (evt.getSource() == buttonConfiguration) {
                 Mainframe.this.buttonConfigurationMouseEntered(evt);
             }
+            else if (evt.getSource() == buttonVentas) {
+                Mainframe.this.buttonVentasMouseEntered(evt);
+            }
         }
 
         public void mouseExited(java.awt.event.MouseEvent evt) {
@@ -341,6 +374,9 @@ public final class Mainframe extends javax.swing.JFrame {
             }
             else if (evt.getSource() == buttonConfiguration) {
                 Mainframe.this.buttonConfigurationMouseExited(evt);
+            }
+            else if (evt.getSource() == buttonVentas) {
+                Mainframe.this.buttonVentasMouseExited(evt);
             }
         }
 
@@ -427,10 +463,28 @@ public final class Mainframe extends javax.swing.JFrame {
         listItemSetItems();
     }//GEN-LAST:event_listItemSelectValueChanged
 
+    private void buttonVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonVentasMouseClicked
+        eventHandler.ventasButtonClick();
+    }//GEN-LAST:event_buttonVentasMouseClicked
+
+    private void buttonVentasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonVentasMouseEntered
+        buttonVentas.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Actions.Blue"));
+    }//GEN-LAST:event_buttonVentasMouseEntered
+
+    private void buttonVentasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonVentasMouseExited
+        buttonVentas.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Button.foreground"));
+    }//GEN-LAST:event_buttonVentasMouseExited
+
     private void listItemSetItems() {
         productItemListModel.clear();
-        for (Producto prod : eventHandler.getLoadedProductos())
+        double price = 0;
+        for (Producto prod : eventHandler.getLoadedProductos()) {
             productItemListModel.addElement(prod);
+            price += prod.getPrice();
+        }
+        textTotal.setText(ViewWrapper.getView().formatNumber(price));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -439,6 +493,8 @@ public final class Mainframe extends javax.swing.JFrame {
     protected javax.swing.JLabel buttonEmployee;
     protected javax.swing.JButton buttonPagarEfectivo;
     protected javax.swing.JButton buttonPagarTarjeta;
+    protected javax.swing.JLabel buttonVentas;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList<Producto> listItemSelect;
     private javax.swing.JList<Producto> listItemView;
     private javax.swing.JPanel panelHeader;
@@ -448,6 +504,7 @@ public final class Mainframe extends javax.swing.JFrame {
     private javax.swing.JScrollPane panelScrollProduct;
     private javax.swing.JScrollPane panelScrollProductType;
     private javax.swing.JPanel panelTicket;
+    private javax.swing.JTextField textTotal;
     // End of variables declaration//GEN-END:variables
 
     public static void main(String[] args) {
