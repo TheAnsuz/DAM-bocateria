@@ -412,18 +412,18 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
     }//GEN-LAST:event_buttonConfigurationMouseClicked
 
     private void buttonPagarEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarEfectivoActionPerformed
-        eventHandler.pagarEffectivoButtonClick();
-        listItemSetItems();
+        if (eventHandler.pagarEffectivoButtonClick())
+            productItemListModel.clear();
     }//GEN-LAST:event_buttonPagarEfectivoActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
         eventHandler.cancelarButtonClick();
-        listItemSetItems();
+        productItemListModel.clear();
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void buttonPagarTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarTarjetaActionPerformed
-        eventHandler.pagarTarjetaButtonClick();
-        listItemSetItems();
+        if (eventHandler.pagarTarjetaButtonClick())
+            productItemListModel.clear();
     }//GEN-LAST:event_buttonPagarTarjetaActionPerformed
 
     private void listItemViewValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listItemViewValueChanged

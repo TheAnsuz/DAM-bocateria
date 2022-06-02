@@ -37,19 +37,21 @@ public class MainframeEventHandler {
     /**
      * Evento al hacer click en el boton de pagar con efectivo
      */
-    public void pagarEffectivoButtonClick() {
+    public boolean pagarEffectivoButtonClick() {
         if (ViewWrapper.getView().getEmpleado() == null)
-            return;
+            return false;
         DataController.getInstance().pay(false);
+        return true;
     }
 
     /**
      * Evento al hacer click en el boton pagar con tarjeta
      */
-    public void pagarTarjetaButtonClick() {
+    public boolean pagarTarjetaButtonClick() {
         if (ViewWrapper.getView().getEmpleado() == null)
-            return;
+            return false;
         DataController.getInstance().pay(true);
+        return true;
     }
 
     /**
