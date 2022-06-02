@@ -4,7 +4,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.DefaultComboBoxModel;
 import org.amrvimag.bocateria.Configuration;
-import org.amrvimag.bocateria.events.ConfigurationEventHandler;
+import org.amrvimag.bocateria.controller.events.ConfigurationEventHandler;
 
 /**
  *

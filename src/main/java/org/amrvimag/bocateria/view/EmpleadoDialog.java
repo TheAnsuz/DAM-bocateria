@@ -5,7 +5,7 @@ import java.awt.event.WindowListener;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import org.amrvimag.bocateria.ResourceIO;
-import org.amrvimag.bocateria.events.EmpleadoSearchEventHandler;
+import org.amrvimag.bocateria.controller.events.EmpleadoSearchEventHandler;
 import org.amrvimag.bocateria.model.entity.Empleado;
 
 /**

@@ -55,48 +55,4 @@ public class EmpleadosDAO {
 
         return emp;
     }
-
-    /**
-     * Adds a new employee to the database
-     * @param id The ID of the employee
-     * @param name The name of the employee
-     * @param comision The comission of the employee
-     * @return Whether the operation has been carried out successfully
-     * @throws SQLException
-     */
-    public static boolean addEmp(String id, String name, double comision) throws SQLException {
-        Connection con = ConnectionDB.getConnection();
-        String update = "INSERT INTO empleados VALUES(?, ?, ?)";
-        PreparedStatement pst = con.prepareStatement(update);
-        pst.setString(1, id);
-        pst.setString(2, name);
-        pst.setDouble(3, comision);
-
-        return pst.executeUpdate() > 0;
-    }
-
-    /**
-     * Removes an employee from the database
-     * @param emp The employee to remove
-     * @return Whether the operation has been carried out successfully
-     * @throws SQLException
-     */
-    public static boolean removeEmp(Empleado emp) throws SQLException {
-        return removeEmp(emp.getId());
-    }
-
-    /**
-     * Removes an employee from the database
-     * @param id The employee to remove
-     * @return Whether the operation has been carried out successfully
-     * @throws SQLException
-     */
-    public static boolean removeEmp(String id) throws SQLException {
-        Connection con = ConnectionDB.getConnection();
-        String update = "DELETE FROM empleados WHERE id_empleado=?";
-        PreparedStatement pst = con.prepareStatement(update);
-        pst.setString(1, id);
-
-        return pst.executeUpdate() > 0;
-    }
 }

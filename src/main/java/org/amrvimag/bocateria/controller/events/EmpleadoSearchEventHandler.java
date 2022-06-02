@@ -1,7 +1,6 @@
-package org.amrvimag.bocateria.events;
+package org.amrvimag.bocateria.controller.events;
 
 import org.amrvimag.bocateria.controller.ControllerDAO;
-import org.amrvimag.bocateria.controller.MainController;
 import org.amrvimag.bocateria.model.entity.Empleado;
 
 import java.util.ArrayList;

@@ -4,6 +4,7 @@ import org.amrvimag.bocateria.ResourceIO;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class Producto {
 
@@ -65,8 +66,8 @@ public class Producto {
 
     public enum Tipos {
         BOCADILLO("bocadillos", ResourceIO.resourceImage("image/bocadillo.png")),
-        BEBIDA("bebidas", ResourceIO.resourceImage("image/undefined.png")),
-        OTRO("otros", ResourceIO.resourceImage("image/undefined.png"));
+        BEBIDA("bebidas", ResourceIO.resourceImage("image/bebidas.png")),
+        OTRO("otros", ResourceIO.resourceImage("image/otros.png"));
 
         Tipos(String nombre, Image image) {
             this.nombre = nombre;
@@ -83,5 +84,19 @@ public class Producto {
         public Image getImage() {
             return image;
         }
+    }
+
+    // The equals and hashCode are necessary for the HashMap in Ticket to sort the products correctly
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Producto producto = (Producto) o;
+        return id == producto.id && type == producto.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, id);
     }
 }

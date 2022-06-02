@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.ResourceIO;
-import org.amrvimag.bocateria.events.MainframeEventHandler;
+import org.amrvimag.bocateria.controller.events.MainframeEventHandler;
 import org.amrvimag.bocateria.model.entity.Empleado;
 import org.amrvimag.bocateria.model.entity.Producto;
 

@@ -1,4 +1,4 @@
-package org.amrvimag.bocateria.events;
+package org.amrvimag.bocateria.controller.events;
 
 import org.amrvimag.bocateria.Configuration;
 

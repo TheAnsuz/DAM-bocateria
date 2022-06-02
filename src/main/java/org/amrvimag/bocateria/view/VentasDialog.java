@@ -2,9 +2,8 @@ package org.amrvimag.bocateria.view;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
-import org.amrvimag.bocateria.events.VentasDiariasEventHandler;
+import org.amrvimag.bocateria.controller.events.VentasDiariasEventHandler;
 import org.amrvimag.bocateria.model.entity.Venta;
 
 /**

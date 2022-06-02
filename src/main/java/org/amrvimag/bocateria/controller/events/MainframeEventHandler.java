@@ -1,4 +1,4 @@
-package org.amrvimag.bocateria.events;
+package org.amrvimag.bocateria.controller.events;
 
 import java.awt.Image;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.amrvimag.bocateria.controller.ControllerDAO;
-import org.amrvimag.bocateria.controller.MainController;
+import org.amrvimag.bocateria.controller.DataController;
 import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.view.ViewWrapper;
 
@@ -40,7 +40,7 @@ public class MainframeEventHandler {
     public void pagarEffectivoButtonClick() {
         if (ViewWrapper.getView().getEmpleado() == null)
             return;
-        MainController.getInstance().pay(false);
+        DataController.getInstance().pay(false);
     }
 
     /**
@@ -49,14 +49,14 @@ public class MainframeEventHandler {
     public void pagarTarjetaButtonClick() {
         if (ViewWrapper.getView().getEmpleado() == null)
             return;
-        MainController.getInstance().pay(true);
+        DataController.getInstance().pay(true);
     }
 
     /**
      * Evento al hacer click en el boton de cancelar pedido
      */
     public void cancelarButtonClick() {
-        MainController.getInstance().clearCurrentVenta();
+        DataController.getInstance().clearAddedProducts();
     }
 
     /**
@@ -79,7 +79,7 @@ public class MainframeEventHandler {
      * @param producto referencia al producto en la lista
      */
     public void addProductoItemButtonClick(int index, Producto producto) {
-        MainController.getInstance().addCurrentVenta(producto);
+        DataController.getInstance().addAddedProducts(producto);
     }
 
     /**
@@ -90,7 +90,7 @@ public class MainframeEventHandler {
      * @param producto referencia del producto en la lista de ventas
      */
     public void removeProductoButtonClick(int index, Producto producto) {
-        MainController.getInstance().removeCurrentVenta(index);
+        DataController.getInstance().removeAddedProducts(index);
     }
 
     /**
@@ -99,7 +99,7 @@ public class MainframeEventHandler {
      * @return los productos que tendrá la venta
      */
     public List<Producto> getLoadedProductos() {
-        return MainController.getInstance().getCurrentProducts();
+        return DataController.getInstance().getAddedProducts();
     }
 
     /**

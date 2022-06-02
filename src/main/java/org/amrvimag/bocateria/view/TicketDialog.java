@@ -6,6 +6,8 @@ package org.amrvimag.bocateria.view;
 
 import org.amrvimag.bocateria.model.entity.Ticket;
 
+import javax.swing.*;
+
 /**
  *
  * @author ismael
@@ -18,7 +20,7 @@ public class TicketDialog extends javax.swing.JDialog {
     public TicketDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        setLocationRelativeTo(null);
+        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
 
     public void setTicket(Ticket ticket) {
