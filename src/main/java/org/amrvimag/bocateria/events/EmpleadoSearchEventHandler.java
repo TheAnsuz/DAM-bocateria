@@ -1,10 +1,10 @@
 package org.amrvimag.bocateria.events;
 
 import org.amrvimag.bocateria.controller.ControllerDAO;
-import org.amrvimag.bocateria.controller.MainController;
 import org.amrvimag.bocateria.model.entity.Empleado;
 
 import java.util.ArrayList;
+import org.amrvimag.bocateria.view.ViewWrapper;
 
 /**
  *
@@ -32,7 +32,7 @@ public class EmpleadoSearchEventHandler {
     }
     
     public boolean onEmpleadoSelect(Empleado empleado) {
-        MainController.getInstance().setCurrentEmpleado(empleado);
+        ViewWrapper.getView().setEmpleado(empleado);
         return true; // True if the window should close after this method gets executed
     }
     

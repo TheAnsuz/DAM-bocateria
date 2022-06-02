@@ -27,7 +27,7 @@ import org.amrvimag.bocateria.model.entity.Producto;
  *
  * @author Adrian MRV. aka AMRV || Ansuz
  */
-public final class Mainframe extends javax.swing.JFrame {
+public final class Mainframe extends javax.swing.JFrame implements Configuration.ConfigurationListener {
 
     private final MainframeEventHandler eventHandler = new MainframeEventHandler();
     private Empleado emp = null;
@@ -44,7 +44,8 @@ public final class Mainframe extends javax.swing.JFrame {
 
         buttonConfiguration.setIcon(new ImageIcon(ResourceIO
                 .resourceImage("image/settings.png", 24, 24)));
-        buttonVentas.setIcon(new ImageIcon(ResourceIO.resourceImage("image/sells.png", 24, 24)));
+        buttonVentas.setIcon(new ImageIcon(ResourceIO
+                .resourceImage("image/sells.png", 24, 24)));
 
         super.setTitle(Configuration
                 .getDefaultConfig("aplication.name", "Tienda Amogus"));
@@ -52,6 +53,8 @@ public final class Mainframe extends javax.swing.JFrame {
         super.setMinimumSize(super.getSize());
         super.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         super.setMaximumSize(super.getSize());
+        super.setTitle(Configuration
+                .getDefaultConfig("application.name", "Tienda amogus"));
     }
 
     private final Map<Producto.Tipos, JToggleButton> buttonTypes = new HashMap<>();
@@ -105,7 +108,10 @@ public final class Mainframe extends javax.swing.JFrame {
     }
 
     public void setEmpleado(Empleado emp) {
-        buttonEmployee.setText(emp.getName());
+        if (emp == null)
+            buttonEmployee.setText("Empleado sin seleccionar");
+        else
+            buttonEmployee.setText(emp.getName());
         this.emp = emp;
     }
 
@@ -570,5 +576,11 @@ public final class Mainframe extends javax.swing.JFrame {
                         .resourceImage("image/undefined.png", size / 2, size / 2)));
 
         frame.setVisible(true);
+    }
+
+    @Override
+    public void onChange(String key, String oldValue, String newValue) {
+        if (key.equals("application.name"))
+            super.setTitle(newValue);
     }
 }

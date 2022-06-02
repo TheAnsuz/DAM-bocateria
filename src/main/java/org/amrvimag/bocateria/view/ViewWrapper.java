@@ -12,6 +12,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import org.amrvimag.bocateria.Configuration;
+import org.amrvimag.bocateria.model.entity.Empleado;
 
 /**
  *
@@ -38,6 +39,14 @@ public class ViewWrapper {
         return wrapper;
     }
 
+    public void setEmpleado(Empleado emp) {
+        mainframe.setEmpleado(emp);
+    }
+    
+    public Empleado getEmpleado() {
+        return mainframe.getEmpleado();
+    }
+    
     public static String getSelectedLookAndFeel() {
         return selectedLookAndFeel;
     }
@@ -101,6 +110,7 @@ public class ViewWrapper {
         ventasDialog = new VentasDialog(mainframe, true);
         validateConfig();
         mainframe.setVisible(true);
+        Configuration.addListener(mainframe);
     }
 
     public String formatTime(TemporalAccessor date) {
