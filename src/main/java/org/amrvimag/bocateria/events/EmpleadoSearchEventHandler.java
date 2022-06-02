@@ -1,6 +1,7 @@
 package org.amrvimag.bocateria.events;
 
 import org.amrvimag.bocateria.controller.ControllerDAO;
+import org.amrvimag.bocateria.controller.MainController;
 import org.amrvimag.bocateria.model.entity.Empleado;
 
 import java.util.ArrayList;
@@ -13,9 +14,6 @@ import org.amrvimag.bocateria.view.ViewWrapper;
 public class EmpleadoSearchEventHandler {
     
     public Empleado[] onSearch(String text, boolean ignoreCase, boolean contains) {
-//        System.out.println("Search");
-//        if (ignoreCase)
-//            return new Empleado[0];
         ArrayList<Empleado> empleados = ControllerDAO.getEmpleados();
 
         if (text.isEmpty()) return empleados.toArray(new Empleado[0]);
@@ -31,6 +29,7 @@ public class EmpleadoSearchEventHandler {
                 results.add(emp);
         }
 
+        System.out.println(results);
         return results.toArray(new Empleado[0]);
     }
     

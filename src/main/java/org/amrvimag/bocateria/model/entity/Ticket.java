@@ -21,8 +21,6 @@ public class Ticket {
         getProdsInMap(prods);
         this.price = venta.getTotal();
         this.tarjeta = tarjeta;
-
-        System.out.println(generateText());
     }
 
     private void getProdsInMap(List<Producto> prods) {
@@ -53,7 +51,7 @@ public class Ticket {
         return date;
     }
 
-    public String generateText() {
+    public String getTicketText() {
         StringBuilder ticket = new StringBuilder();
         ticket.append("=======================================\n");
         ticket.append(String.format("%24s %n", "Bocatería"));

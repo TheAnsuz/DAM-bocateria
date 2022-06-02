@@ -131,7 +131,8 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
-        if (evt.getValueIsAdjusting())
+
+        if (!evt.getValueIsAdjusting())
             return;
         
         final boolean shouldClose = eventHandler.onEmpleadoSelect(listModel.elementAt(jList1.getSelectedIndex()));

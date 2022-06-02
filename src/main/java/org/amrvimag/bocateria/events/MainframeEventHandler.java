@@ -38,7 +38,7 @@ public class MainframeEventHandler {
      * Evento al hacer click en el boton de pagar con efectivo
      */
     public void pagarEffectivoButtonClick() {
-        if (MainController.getInstance().getCurrentEmpleado() == null)
+        if (ViewWrapper.getView().getEmpleado() == null)
             return;
         MainController.getInstance().pay(false);
     }
@@ -47,7 +47,7 @@ public class MainframeEventHandler {
      * Evento al hacer click en el boton pagar con tarjeta
      */
     public void pagarTarjetaButtonClick() {
-        if (MainController.getInstance().getCurrentEmpleado() == null)
+        if (ViewWrapper.getView().getEmpleado() == null)
             return;
         MainController.getInstance().pay(true);
     }

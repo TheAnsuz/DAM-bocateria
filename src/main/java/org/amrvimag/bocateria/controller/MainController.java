@@ -1,10 +1,10 @@
 package org.amrvimag.bocateria.controller;
 
-import org.amrvimag.bocateria.model.entity.Empleado;
 import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.model.entity.Ticket;
 import org.amrvimag.bocateria.model.entity.Venta;
 import org.amrvimag.bocateria.view.TicketDialog;
+import org.amrvimag.bocateria.view.ViewWrapper;
 
 import java.util.ArrayList;
 
@@ -22,8 +22,6 @@ public class MainController {
     }
 
     private ArrayList<Producto> currentVenta = new ArrayList<>();
-
-    private Empleado currentEmpleado;
 
     public ArrayList<Producto> getCurrentVenta() {
         return currentVenta;
@@ -49,22 +47,14 @@ public class MainController {
         return price;
     }
 
-    public Empleado getCurrentEmpleado() {
-        return currentEmpleado;
-    }
-
-    public void setCurrentEmpleado(Empleado currentEmpleado) {
-        MainController.getInstance().currentEmpleado = currentEmpleado;
-    }
-
     public void pay(boolean card) {
         if (MainController.getInstance().getCurrentVenta().isEmpty())
             return;
 
-        ControllerDAO.addVenta(getCurrentEmpleado(), getTotalPrice());
+        ControllerDAO.addVenta(ViewWrapper.getView().getEmpleado(), getTotalPrice());
         ArrayList<Venta> ventas = ControllerDAO.getVentas();
         Ticket ticket = new Ticket(ventas.get(ventas.size() -1), getCurrentVenta(), card);
-        new TicketDialog(ticket.generateText()).setVisible(true);
+        new TicketDialog(ticket.getTicketText()).setVisible(true);
         clearCurrentVenta();
     }
 }
