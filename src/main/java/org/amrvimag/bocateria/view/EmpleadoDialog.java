@@ -1,19 +1,27 @@
 package org.amrvimag.bocateria.view;
 
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import org.amrvimag.bocateria.ResourceIO;
+import org.amrvimag.bocateria.events.EmpleadoSearchEventHandler;
+import org.amrvimag.bocateria.model.entity.Empleado;
 
 /**
  *
  * @author Adrian MRV. aka AMRV || Ansuz (org.amrv)
  */
-public class EmpleadoDialog extends javax.swing.JDialog {
+public class EmpleadoDialog extends javax.swing.JDialog implements WindowListener {
 
+    private final EmpleadoSearchEventHandler eventHandler = new EmpleadoSearchEventHandler();
+    private final DefaultListModel<Empleado> listModel = new DefaultListModel<>();
     /**
      * Creates new form EmpleadoDialog
      */
     public EmpleadoDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        super.addWindowListener(this);
         initComponents();
     }
 
@@ -27,47 +35,49 @@ public class EmpleadoDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroupCaseContainers = new javax.swing.ButtonGroup();
-        jTextField1 = new javax.swing.JTextField();
+        inputText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        checkIgnorecase = new javax.swing.JCheckBox();
+        checkStartsWith = new javax.swing.JRadioButton();
+        checkContains = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Seleccionar empleado");
         setResizable(false);
 
+        inputText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputTextActionPerformed(evt);
+            }
+        });
+
         jLabel1.setIcon(new ImageIcon(ResourceIO.resourceImage("image/clue.png", 20, 20)));
         jLabel1.setToolTipText("Filtrar");
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        jList1.setModel(listModel);
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(jList1);
 
-        jCheckBox1.setText("Ignorar mayusc");
+        checkIgnorecase.setText("Ignorar mayúsculas");
 
-        buttonGroupCaseContainers.add(jRadioButton1);
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Comienza");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
-            }
-        });
+        buttonGroupCaseContainers.add(checkStartsWith);
+        checkStartsWith.setSelected(true);
+        checkStartsWith.setText("Comienza");
 
-        buttonGroupCaseContainers.add(jRadioButton2);
-        jRadioButton2.setText("Contiene");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
+        buttonGroupCaseContainers.add(checkContains);
+        checkContains.setText("Contiene");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,16 +88,16 @@ public class EmpleadoDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(inputText, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
+                            .addComponent(checkIgnorecase)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jRadioButton1)
+                                .addComponent(checkStartsWith)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton2)))
+                                .addComponent(checkContains)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -96,14 +106,14 @@ public class EmpleadoDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
+                    .addComponent(inputText)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox1)
+                .addComponent(checkIgnorecase)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(checkStartsWith)
+                    .addComponent(checkContains))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -112,13 +122,21 @@ public class EmpleadoDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    private void inputTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextActionPerformed
+        eventHandler.onSearch(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
+    }//GEN-LAST:event_inputTextActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        eventHandler.onSearch(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+        if (evt.getValueIsAdjusting())
+            return;
+        
+        final boolean shouldClose = eventHandler.onEmpleadoSelect(listModel.elementAt(jList1.getSelectedIndex()));
+        super.setVisible(!shouldClose);
+    }//GEN-LAST:event_jList1ValueChanged
 
     /**
      * @param args the command line arguments
@@ -164,12 +182,49 @@ public class EmpleadoDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupCaseContainers;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JRadioButton checkContains;
+    private javax.swing.JCheckBox checkIgnorecase;
+    private javax.swing.JRadioButton checkStartsWith;
+    private javax.swing.JTextField inputText;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JList<Empleado> jList1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        listModel.clear();
+        for (Empleado emp : eventHandler.onSearch("", true, false))
+            listModel.addElement(emp);
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        eventHandler.onClose();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+    
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+    
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+    
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    
+    }
 }

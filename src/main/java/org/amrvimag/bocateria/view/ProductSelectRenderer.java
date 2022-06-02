@@ -26,7 +26,7 @@ public class ProductSelectRenderer<E extends Producto> extends JPanel implements
     private final JPanel innerPanel = new JPanel(new BorderLayout(10, 10));
     private final JLabel productLabel = new JLabel("");
     private final JLabel productoInfo = new JLabel("");
-    private final Color defaultColor;
+//    private final Color defaultColor;
     private final Color defaultBackground;
 
     public ProductSelectRenderer() {
@@ -42,7 +42,7 @@ public class ProductSelectRenderer<E extends Producto> extends JPanel implements
         innerPanel.add(productoInfo, BorderLayout.LINE_END);
         innerPanel.setBorder(new RoundedBorder(8));
 
-        defaultColor = productLabel.getForeground();
+//        defaultColor = productLabel.getForeground();
         defaultBackground = innerPanel.getBackground();
 
         super.setLayout(new GridLayout(1, 1));
@@ -57,13 +57,13 @@ public class ProductSelectRenderer<E extends Producto> extends JPanel implements
         productLabel.setIcon(new ImageIcon(value.getImg() == null ? ResourceIO.resourceImage("image/undefined.png", 32, 32) : value.getImg()));
         productLabel.setText(value.getName());
         productoInfo.setText(value.getPrice() + "€");
-        if (cellHasFocus) {
-            productLabel.setForeground(FOCUS_COLOR);
-            productoInfo.setForeground(FOCUS_COLOR);
-        } else {
-            productLabel.setForeground(defaultColor);
-            productoInfo.setForeground(defaultColor);
-        }
+//        if (cellHasFocus) {
+//            productLabel.setForeground(FOCUS_COLOR);
+//            productoInfo.setForeground(FOCUS_COLOR);
+//        } else {
+//            productLabel.setForeground(defaultColor);
+//            productoInfo.setForeground(defaultColor);
+//        }
 
         if (isSelected)
             innerPanel.setBackground(innerPanel.getBackground().darker());

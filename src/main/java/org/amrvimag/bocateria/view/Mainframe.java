@@ -4,9 +4,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -21,19 +19,28 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.ResourceIO;
+import org.amrvimag.bocateria.events.MainframeEventHandler;
+import org.amrvimag.bocateria.model.entity.Empleado;
 import org.amrvimag.bocateria.model.entity.Producto;
 
 /**
  *
  * @author Adrian MRV. aka AMRV || Ansuz
  */
-public class Mainframe extends javax.swing.JFrame {
+public final class Mainframe extends javax.swing.JFrame {
+
+    private final MainframeEventHandler buttonClickHandler = new MainframeEventHandler();
+    private Empleado emp = null;
 
     /**
      * Creates new form Mainframe
      */
     public Mainframe() {
         initComponents();
+
+        for (Entry<Producto.Tipos, Image> tipo : buttonClickHandler
+                .loadProductTypes().entrySet())
+            this.addType(tipo.getKey(), tipo.getValue());
 
         buttonConfiguration.setIcon(new ImageIcon(ResourceIO
                 .resourceImage("image/settings.png", 24, 24)));
@@ -49,11 +56,6 @@ public class Mainframe extends javax.swing.JFrame {
     private final Map<Producto.Tipos, JToggleButton> buttonTypes = new HashMap<>();
     private JToggleButton selectedProductTypeButton = null;
     private final ButtonGroup productTypeGroup = new ButtonGroup();
-    private final List<ProductTypeEvent> productTypeEvents = new ArrayList<>();
-
-    public List<ProductTypeEvent> getProductTypeEventList() {
-        return productTypeEvents;
-    }
 
     public void addType(Producto.Tipos type, Image img) {
         JToggleButton button = constructButton(type.getNombre(), new ImageIcon(img));
@@ -83,8 +85,9 @@ public class Mainframe extends javax.swing.JFrame {
             else
                 selectedProductTypeButton = button;
 
-            for (ProductTypeEvent event : productTypeEvents)
-                event.onTypeChange(button, getKeyByValue(button), selectedProductTypeButton != null);
+            productSelectListModel.clear();
+            productSelectListModel.addAll(buttonClickHandler
+                    .productTypeSelectButtonClick(getKeyByValue(button), selectedProductTypeButton != null));
 
         });
 
@@ -99,10 +102,13 @@ public class Mainframe extends javax.swing.JFrame {
         return Producto.Tipos.OTRO;
     }
 
-    public interface ProductTypeEvent {
+    public void setEmpleado(Empleado emp) {
+        buttonEmployee.setText(emp.getName());
+        this.emp = emp;
+    }
 
-        void onTypeChange(JToggleButton clickedButton, Producto.Tipos tipo, boolean hasSelection);
-
+    public Empleado getEmpleado() {
+        return this.emp;
     }
 
     private final DefaultListModel<Producto> productSelectListModel = new DefaultListModel<>();
@@ -133,20 +139,26 @@ public class Mainframe extends javax.swing.JFrame {
         panelScrollProductType = new javax.swing.JScrollPane();
         panelProductType = new javax.swing.JPanel();
 
+        FormListener formListener = new FormListener();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        panelHeader.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
         panelHeader.setMaximumSize(new java.awt.Dimension(32767, 32));
         panelHeader.setMinimumSize(new java.awt.Dimension(383, 32));
         panelHeader.setPreferredSize(new java.awt.Dimension(383, 32));
 
+        buttonEmployee.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         buttonEmployee.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        buttonEmployee.setText("${emplado}");
-        buttonEmployee.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        buttonEmployee.setText(" ${emplado}");
+        buttonEmployee.setBorder(new javax.swing.border.LineBorder(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"), 1, true));
+        buttonEmployee.addMouseListener(formListener);
 
+        buttonConfiguration.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         buttonConfiguration.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         buttonConfiguration.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        buttonConfiguration.setText("Configuración");
+        buttonConfiguration.setText("Configuración ");
+        buttonConfiguration.setBorder(new javax.swing.border.LineBorder(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"), 1, true));
+        buttonConfiguration.addMouseListener(formListener);
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
@@ -156,12 +168,15 @@ public class Mainframe extends javax.swing.JFrame {
                 .addComponent(buttonEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(buttonConfiguration)
-                .addContainerGap())
+                .addGap(0, 0, 0))
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-            .addComponent(buttonConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(buttonConfiguration, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonEmployee, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         panelTicket.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
@@ -169,18 +184,22 @@ public class Mainframe extends javax.swing.JFrame {
         listItemView.setModel(productItemListModel);
         listItemView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listItemView.setCellRenderer(new ProductInfoRenderer<Producto>());
+        listItemView.addListSelectionListener(formListener);
         panelScrollItemView.setViewportView(listItemView);
 
         buttonPagarEfectivo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         buttonPagarEfectivo.setText("Pagar en efectivo");
+        buttonPagarEfectivo.addActionListener(formListener);
 
         buttonCancelar.setBackground(new java.awt.Color(255, 102, 102));
         buttonCancelar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         buttonCancelar.setForeground(new java.awt.Color(51, 51, 51));
         buttonCancelar.setText("Cancelar");
+        buttonCancelar.addActionListener(formListener);
 
         buttonPagarTarjeta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         buttonPagarTarjeta.setText("Pagar con tarjeta");
+        buttonPagarTarjeta.addActionListener(formListener);
 
         javax.swing.GroupLayout panelTicketLayout = new javax.swing.GroupLayout(panelTicket);
         panelTicket.setLayout(panelTicketLayout);
@@ -219,6 +238,7 @@ public class Mainframe extends javax.swing.JFrame {
         listItemSelect.setModel(productSelectListModel);
         listItemSelect.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         listItemSelect.setCellRenderer(productSelectRenderer);
+        listItemSelect.addListSelectionListener(formListener);
         panelScrollProduct.setViewportView(listItemSelect);
 
         panelScrollProductType.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
@@ -278,7 +298,137 @@ public class Mainframe extends javax.swing.JFrame {
         );
 
         pack();
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.MouseListener, javax.swing.event.ListSelectionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == buttonPagarEfectivo) {
+                Mainframe.this.buttonPagarEfectivoActionPerformed(evt);
+            }
+            else if (evt.getSource() == buttonCancelar) {
+                Mainframe.this.buttonCancelarActionPerformed(evt);
+            }
+            else if (evt.getSource() == buttonPagarTarjeta) {
+                Mainframe.this.buttonPagarTarjetaActionPerformed(evt);
+            }
+        }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == buttonEmployee) {
+                Mainframe.this.buttonEmployeeMouseClicked(evt);
+            }
+            else if (evt.getSource() == buttonConfiguration) {
+                Mainframe.this.buttonConfigurationMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == buttonEmployee) {
+                Mainframe.this.buttonEmployeeMouseEntered(evt);
+            }
+            else if (evt.getSource() == buttonConfiguration) {
+                Mainframe.this.buttonConfigurationMouseEntered(evt);
+            }
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == buttonEmployee) {
+                Mainframe.this.buttonEmployeeMouseExited(evt);
+            }
+            else if (evt.getSource() == buttonConfiguration) {
+                Mainframe.this.buttonConfigurationMouseExited(evt);
+            }
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
+        }
+
+        public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+            if (evt.getSource() == listItemView) {
+                Mainframe.this.listItemViewValueChanged(evt);
+            }
+            else if (evt.getSource() == listItemSelect) {
+                Mainframe.this.listItemSelectValueChanged(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEmployeeMouseClicked
+        buttonClickHandler.employeeButtonClick();
+    }//GEN-LAST:event_buttonEmployeeMouseClicked
+
+    private void buttonConfigurationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonConfigurationMouseClicked
+        buttonClickHandler.configurationButtonClick();
+    }//GEN-LAST:event_buttonConfigurationMouseClicked
+
+    private void buttonPagarEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarEfectivoActionPerformed
+        buttonClickHandler.pagarEffectivoButtonClick();
+    }//GEN-LAST:event_buttonPagarEfectivoActionPerformed
+
+    private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
+        buttonClickHandler.cancelarButtonClick();
+    }//GEN-LAST:event_buttonCancelarActionPerformed
+
+    private void buttonPagarTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarTarjetaActionPerformed
+        buttonClickHandler.pagarTarjetaButtonClick();
+    }//GEN-LAST:event_buttonPagarTarjetaActionPerformed
+
+    private void listItemViewValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listItemViewValueChanged
+        if (evt.getValueIsAdjusting() || listItemSelect.getSelectedIndex() < 0)
+            return;
+
+        final int index = listItemView.getSelectedIndex();
+        buttonClickHandler
+                .removeProductoButtonClick(index, productItemListModel
+                        .elementAt(index));
+
+        listItemView.clearSelection();
+        listItemSetItems();
+    }//GEN-LAST:event_listItemViewValueChanged
+
+    private void buttonEmployeeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEmployeeMouseEntered
+        buttonEmployee.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Actions.Blue"));
+    }//GEN-LAST:event_buttonEmployeeMouseEntered
+
+    private void buttonConfigurationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonConfigurationMouseEntered
+        buttonConfiguration.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Actions.Blue"));
+    }//GEN-LAST:event_buttonConfigurationMouseEntered
+
+    private void buttonEmployeeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEmployeeMouseExited
+        buttonEmployee.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Button.foreground"));
+    }//GEN-LAST:event_buttonEmployeeMouseExited
+
+    private void buttonConfigurationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonConfigurationMouseExited
+        buttonConfiguration.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Button.foreground"));
+    }//GEN-LAST:event_buttonConfigurationMouseExited
+
+    private void listItemSelectValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listItemSelectValueChanged
+        if (evt.getValueIsAdjusting() || listItemSelect.getSelectedIndex() < 0)
+            return;
+
+        final int index = listItemSelect.getSelectedIndex();
+        buttonClickHandler
+                .addProductoItemButtonClick(index, productSelectListModel
+                        .elementAt(index));
+
+        listItemSelect.clearSelection();
+        listItemSetItems();
+    }//GEN-LAST:event_listItemSelectValueChanged
+
+    private void listItemSetItems() {
+        productItemListModel.clear();
+        productItemListModel.addAll(buttonClickHandler.getLoadedProductos());
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JButton buttonCancelar;
@@ -311,28 +461,53 @@ public class Mainframe extends javax.swing.JFrame {
 
         Mainframe frame = new Mainframe();
 
-        frame.addType(Producto.Tipos.OTRO, ResourceIO.resourceImage("image/icon.png", 64, 64));
-
-        frame.getProductTypeEventList().add((ProductTypeEvent) (JToggleButton clickedButton, Producto.Tipos tipo, boolean hasSelection) -> {
-            System.out.println(hasSelection + "? > " + tipo.getNombre());
-        });
+        frame.addType(Producto.Tipos.OTRO, ResourceIO
+                .resourceImage("image/icon.png", 64, 64));
 
         final int size = 64;
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Cocaola", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de uwu", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Eneryeti", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
-        frame.productSelectListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Cocaola", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de uwu", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Eneryeti", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
+        frame.productSelectListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size, size)));
 
-        frame.productItemListModel.addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size / 2, size / 2)));
-        frame.productItemListModel.addElement(new Producto(Producto.Tipos.OTRO, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size / 2, size / 2)));
-        frame.productItemListModel.addElement(new Producto(Producto.Tipos.BOCADILLO, 12, "Agua de chica gamer", 14.49, ResourceIO.resourceImage("image/undefined.png", size / 2, size / 2)));
+        frame.productItemListModel
+                .addElement(new Producto(Producto.Tipos.BEBIDA, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size / 2, size / 2)));
+        frame.productItemListModel
+                .addElement(new Producto(Producto.Tipos.OTRO, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size / 2, size / 2)));
+        frame.productItemListModel
+                .addElement(new Producto(Producto.Tipos.BOCADILLO, 12, "Agua de chica gamer", 14.49, ResourceIO
+                        .resourceImage("image/undefined.png", size / 2, size / 2)));
 
         frame.setVisible(true);
     }

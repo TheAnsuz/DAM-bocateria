@@ -1,26 +1,36 @@
 package org.amrvimag.bocateria.view;
 
-import java.util.Arrays;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javax.swing.DefaultComboBoxModel;
+import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.events.ConfigurationEventHandler;
 
 /**
  *
  * @author Adrian MRV. aka AMRV || Ansuz
  */
-public class ConfigurationDialog extends javax.swing.JDialog{
+public class ConfigurationDialog extends javax.swing.JDialog implements WindowListener {
 
+    private final DefaultComboBoxModel<String> modelTheme = new DefaultComboBoxModel<>(ViewWrapper
+            .getSupportedLookAndFeels());
     private final ConfigurationEventHandler eventHandler;
+
     /**
      * Creates new form ConfigurationDialog
+     *
      * @param parent
      * @param modal
      */
     public ConfigurationDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         super.setTitle("Configuración");
+        super.addWindowListener(this);
         initComponents();
+        boxLaf.setSelectedItem(ViewWrapper.getSelectedLookAndFeel());
         eventHandler = new ConfigurationEventHandler();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,6 +49,11 @@ public class ConfigurationDialog extends javax.swing.JDialog{
         textPassword = new javax.swing.JPasswordField();
         jSeparator1 = new javax.swing.JSeparator();
         jButton1 = new javax.swing.JButton();
+        boxLaf = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        textAppname = new javax.swing.JTextField();
 
         FormListener formListener = new FormListener();
 
@@ -49,17 +64,30 @@ public class ConfigurationDialog extends javax.swing.JDialog{
 
         jLabel2.setText("URL");
 
-        textUrl.setText("https://localhost:3090/");
+        textUrl.setText(Configuration.getConfig("sql.url"));
 
         jLabel3.setText("Usuario");
 
-        textUser.setText("root");
+        textUser.setText(Configuration.getConfig("sql.username"));
 
         jLabel4.setText("Contraseña");
+
+        textPassword.setText(Configuration.getConfig("sql.password"));
 
         jButton1.setText("Guardar");
         super.getRootPane().setDefaultButton(jButton1);
         jButton1.addActionListener(formListener);
+
+        boxLaf.setModel(modelTheme);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setText("Apariencia");
+
+        jLabel6.setText("Tema");
+
+        jLabel7.setText("Nombre de aplicación");
+
+        textAppname.setText(Configuration.getConfig("application.name"));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -84,7 +112,18 @@ public class ConfigurationDialog extends javax.swing.JDialog{
                         .addComponent(textPassword))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(boxLaf, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textAppname, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -106,7 +145,17 @@ public class ConfigurationDialog extends javax.swing.JDialog{
                     .addComponent(textPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(boxLaf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textAppname, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -126,19 +175,67 @@ public class ConfigurationDialog extends javax.swing.JDialog{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        eventHandler.onConfirmChanges(textUrl.getText(), textUser.getText(), Arrays.toString(textPassword.getPassword()));
+        final boolean shouldClose = eventHandler.onConfirmChanges(textUrl
+                .getText(), textUser.getText(), new String(textPassword
+                .getPassword()), boxLaf.getSelectedItem().toString(), textAppname
+                .getText());
+        super.setVisible(!shouldClose);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxLaf;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField textAppname;
     private javax.swing.JPasswordField textPassword;
     private javax.swing.JTextField textUrl;
     private javax.swing.JTextField textUser;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        eventHandler
+                .onClose(textUrl
+                .getText(), textUser.getText(), new String(textPassword
+                .getPassword()), boxLaf.getSelectedItem().toString(), textAppname
+                .getText());
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
 
 }
