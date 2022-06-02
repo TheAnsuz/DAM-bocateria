@@ -1,6 +1,8 @@
 package org.amrvimag.bocateria.model.entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,30 +11,29 @@ public class Ticket {
 
     private final int id;
     private final String employee;
-    private final Date date;
-    private final HashMap<Producto, Integer> prods = new HashMap<>();
+    private final Timestamp time;
+    private final HashMap<Producto, Integer> prods;
     private final double price;
     private final boolean tarjeta;
 
     public Ticket(Venta venta, List<Producto> prods, boolean tarjeta) {
         this.id = venta.getId();
-        this.date = venta.getTimestamp();
+        this.time = venta.getTimestamp();
         this.employee = venta.getEmp().getName();
-        getProdsInMap(prods);
+        this.prods = getProdQuantities(prods);
         this.price = venta.getTotal();
         this.tarjeta = tarjeta;
     }
 
-    private void getProdsInMap(List<Producto> prods) {
+    private HashMap<Producto, Integer> getProdQuantities(List<Producto> prods) {
+        HashMap<Producto, Integer> map = new HashMap<>();
         for (Producto p : prods) {
-            System.out.println(p + " : " + (this.prods.containsKey(p) ? "Ya existe" : "No existe"));
-            if (!this.prods.containsKey(p)) {
-                this.prods.put(p, 1);
-            }
-            else {
-                this.prods.replace(p, this.prods.get(p) + 1);
-            }
+            if (!map.containsKey(p))
+                map.put(p, 1);
+            else
+                map.replace(p, map.get(p) + 1);
         }
+        return map;
     }
 
     public int getId() {
@@ -47,19 +48,21 @@ public class Ticket {
         return prods;
     }
 
-    public Date getDate() {
-        return date;
+    public Timestamp getTime() {
+        return time;
     }
 
     public String getTicketText() {
+        String timeFormatted = new SimpleDateFormat("dd/MM HH:mm:ss").format(time);
         StringBuilder ticket = new StringBuilder();
         ticket.append("=======================================\n");
         ticket.append(String.format("%24s %n", "Bocatería"));
         ticket.append("=======================================\n");
         ticket.append("Le atendió: ").append(employee).append("\n");
+        ticket.append("A día ").append(timeFormatted).append("\n");
         ticket.append("ID: ").append(id).append("\n");
         ticket.append("***************************************\n\n");
-        ticket.append("Producto              Cant.     Precio\n");
+        ticket.append("Producto              Cant.      Precio\n");
         ticket.append("--------              -----     -------\n");
         for (Map.Entry<Producto, Integer> e : prods.entrySet()) {
             Producto p = e.getKey();
@@ -67,7 +70,7 @@ public class Ticket {
             ticket.append(String.format("%-21s %5s %11s%n", p.getName(), c, p.getPrice() * c + "€"));
         }
         ticket.append("---------------------------------------\n");
-        ticket.append("Precio total: ").append(price).append("€").append("\n");
+        ticket.append(String.format("%40s", price + "€\n"));
         ticket.append("Modo de pago: ").append(tarjeta ? "tarjeta" : "en efectivo").append("\n");
         ticket.append("\n");
         ticket.append("=======================================\n");

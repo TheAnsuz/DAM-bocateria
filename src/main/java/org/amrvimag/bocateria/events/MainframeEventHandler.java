@@ -99,7 +99,7 @@ public class MainframeEventHandler {
      * @return los productos que tendrá la venta
      */
     public List<Producto> getLoadedProductos() {
-        return MainController.getInstance().getCurrentVenta();
+        return MainController.getInstance().getCurrentProducts();
     }
 
     /**

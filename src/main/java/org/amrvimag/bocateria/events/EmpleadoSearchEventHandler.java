@@ -29,7 +29,6 @@ public class EmpleadoSearchEventHandler {
                 results.add(emp);
         }
 
-        System.out.println(results);
         return results.toArray(new Empleado[0]);
     }
     

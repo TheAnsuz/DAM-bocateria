@@ -13,6 +13,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.model.entity.Empleado;
+import org.amrvimag.bocateria.model.entity.Ticket;
 
 /**
  *
@@ -101,6 +102,7 @@ public class ViewWrapper {
     private final EmpleadoDialog empleadoDialog;
     private final ErrorDialog errorDialog;
     private final VentasDialog ventasDialog;
+    private final TicketDialog ticketDialog;
 
     private ViewWrapper() {
         mainframe = new Mainframe();
@@ -108,6 +110,7 @@ public class ViewWrapper {
         empleadoDialog = new EmpleadoDialog(mainframe, true);
         errorDialog = new ErrorDialog(mainframe);
         ventasDialog = new VentasDialog(mainframe, true);
+        ticketDialog = new TicketDialog(mainframe, true);
         validateConfig();
         mainframe.setVisible(true);
         Configuration.addListener(mainframe);
@@ -130,6 +133,12 @@ public class ViewWrapper {
         errorDialog.setError(exception);
         errorDialog.setLocationRelativeTo(mainframe);
         errorDialog.setVisible(true);
+    }
+
+    public void showTicket(Ticket ticket) {
+        ticketDialog.setTicket(ticket);
+        ticketDialog.setLocationRelativeTo(mainframe);
+        ticketDialog.setVisible(true);
     }
 
     public boolean seesError() {

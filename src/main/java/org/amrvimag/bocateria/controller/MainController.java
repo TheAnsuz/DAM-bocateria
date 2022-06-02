@@ -6,6 +6,7 @@ import org.amrvimag.bocateria.model.entity.Venta;
 import org.amrvimag.bocateria.view.TicketDialog;
 import org.amrvimag.bocateria.view.ViewWrapper;
 
+import javax.swing.text.View;
 import java.util.ArrayList;
 
 public class MainController {
@@ -21,40 +22,40 @@ public class MainController {
         return instance;
     }
 
-    private ArrayList<Producto> currentVenta = new ArrayList<>();
+    private ArrayList<Producto> currentProducts = new ArrayList<>();
 
-    public ArrayList<Producto> getCurrentVenta() {
-        return currentVenta;
+    public ArrayList<Producto> getCurrentProducts() {
+        return currentProducts;
     }
 
     public void clearCurrentVenta() {
-        currentVenta = new ArrayList<>();
+        currentProducts = new ArrayList<>();
     }
 
     public void addCurrentVenta(Producto prod) {
-        currentVenta.add(prod);
+        currentProducts.add(prod);
     }
 
     public void removeCurrentVenta(int index) {
-        currentVenta.remove(index);
+        currentProducts.remove(index);
     }
 
     public double getTotalPrice() {
         double price = 0;
-        for (Producto p : currentVenta)
+        for (Producto p : currentProducts)
             price += p.getPrice();
 
         return price;
     }
 
     public void pay(boolean card) {
-        if (MainController.getInstance().getCurrentVenta().isEmpty())
+        if (MainController.getInstance().getCurrentProducts().isEmpty())
             return;
 
         ControllerDAO.addVenta(ViewWrapper.getView().getEmpleado(), getTotalPrice());
         ArrayList<Venta> ventas = ControllerDAO.getVentas();
-        Ticket ticket = new Ticket(ventas.get(ventas.size() -1), getCurrentVenta(), card);
-        new TicketDialog(ticket.getTicketText()).setVisible(true);
+        Ticket ticket = new Ticket(ventas.get(ventas.size() -1), getCurrentProducts(), card);
+        ViewWrapper.getView().showTicket(ticket);
         clearCurrentVenta();
     }
 }

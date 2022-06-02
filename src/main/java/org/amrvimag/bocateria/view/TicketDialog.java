@@ -4,19 +4,26 @@
  */
 package org.amrvimag.bocateria.view;
 
+import org.amrvimag.bocateria.model.entity.Ticket;
+
 /**
  *
  * @author ismael
  */
-public class TicketDialog extends javax.swing.JFrame {
+public class TicketDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form TicketWindow
      */
-    public TicketDialog(String ticket) {
+    public TicketDialog(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        text.setText(ticket);
+    }
+
+    public void setTicket(Ticket ticket) {
+        text.setText(ticket.getTicketText());
+        this.pack();
     }
 
     /**
