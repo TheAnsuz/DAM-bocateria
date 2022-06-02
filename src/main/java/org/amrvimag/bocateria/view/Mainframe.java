@@ -37,7 +37,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
      */
     public Mainframe() {
         initComponents();
-
+        setEmpleado(null);
         for (Entry<Producto.Tipos, Image> tipo : eventHandler
                 .loadProductTypes().entrySet())
             this.addType(tipo.getKey(), tipo.getValue());
@@ -201,6 +201,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         );
 
         panelTicket.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
+        panelTicket.setMinimumSize(new java.awt.Dimension(330, 304));
 
         listItemView.setModel(productItemListModel);
         listItemView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);

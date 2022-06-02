@@ -14,7 +14,7 @@ import org.amrvimag.bocateria.model.entity.Venta;
 public class VentasDialog extends javax.swing.JDialog implements WindowListener {
 
     private final VentasDiariasEventHandler eventHandler = new VentasDiariasEventHandler();
-    private final DefaultTableModel tabelModel;
+    private final DefaultTableModel tableModel;
 
     /**
      * Creates new form VentasDialog
@@ -23,7 +23,7 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
         super(parent, modal);
         super.addWindowListener(this);
         initComponents();
-        tabelModel = (DefaultTableModel) jTable1.getModel();
+        tableModel = (DefaultTableModel) jTable1.getModel();
     }
 
     /**
@@ -178,8 +178,9 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
     // End of variables declaration//GEN-END:variables
 
     private void loadElements() {
+        tableModel.setRowCount(0);
         for (Venta venta : eventHandler.onLoad())
-            tabelModel.addRow(new Object[]{
+            tableModel.addRow(new Object[]{
                 venta.getId(),
                 ViewWrapper.getView().formatTime(venta.getTimestamp()
                 .toLocalDateTime()),

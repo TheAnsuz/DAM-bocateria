@@ -26,7 +26,7 @@ public class ProductInfoRenderer<E extends Producto> extends ProductInfoPanel im
         super.setBackground(index % 2 == 0 ? defaultColor.brighter() : defaultColor.darker());
         if (isSelected)
             super.setBackground(index % 2 == 0 ? super.getBackground().brighter() : super.getBackground().darker());
-        super.setImage(value.getImg() == null ? ResourceIO.resourceImage("image/undefined.png", 32, 32) : value.getImg());
+        super.setImage(value.getImg() == null ? ResourceIO.resourceImage("image/undefined.png", 64, 64) : value.getImg());
         super.setPrimaryText(value.getName());
         super.setSecondaryText(value.getType().getNombre());
         super.setDetailText(value.getPrice() + "€");
