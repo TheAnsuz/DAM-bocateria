@@ -21,8 +21,8 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
      */
     public EmpleadoDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        super.addWindowListener(this);
         initComponents();
+        super.addWindowListener(this);
     }
 
     /**
@@ -123,11 +123,11 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
     }// </editor-fold>//GEN-END:initComponents
 
     private void inputTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextActionPerformed
-        eventHandler.onSearch(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
+        displayEmpleados(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
     }//GEN-LAST:event_inputTextActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        eventHandler.onSearch(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
+        displayEmpleados(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
@@ -180,6 +180,12 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
         });
     }
 
+    private void displayEmpleados(String text, boolean ignoreCase, boolean contains) {
+        listModel.clear();
+        for (Empleado emp : eventHandler.onSearch(text, ignoreCase, contains))
+            listModel.addElement(emp);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupCaseContainers;
     private javax.swing.JRadioButton checkContains;
@@ -193,9 +199,7 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
 
     @Override
     public void windowOpened(WindowEvent e) {
-        listModel.clear();
-        for (Empleado emp : eventHandler.onSearch("", true, false))
-            listModel.addElement(emp);
+        displayEmpleados("", true, false);
     }
 
     @Override

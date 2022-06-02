@@ -13,6 +13,9 @@ import org.amrvimag.bocateria.view.ViewWrapper;
 public class EmpleadoSearchEventHandler {
     
     public Empleado[] onSearch(String text, boolean ignoreCase, boolean contains) {
+//        System.out.println("Search");
+//        if (ignoreCase)
+//            return new Empleado[0];
         ArrayList<Empleado> empleados = ControllerDAO.getEmpleados();
 
         if (text.isEmpty()) return empleados.toArray(new Empleado[0]);
