@@ -381,7 +381,7 @@ public final class Mainframe extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonPagarTarjetaActionPerformed
 
     private void listItemViewValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listItemViewValueChanged
-        if (evt.getValueIsAdjusting() || listItemSelect.getSelectedIndex() < 0)
+        if (evt.getValueIsAdjusting() || listItemView.getSelectedIndex() < 0)
             return;
 
         final int index = listItemView.getSelectedIndex();
