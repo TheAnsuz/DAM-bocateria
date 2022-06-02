@@ -29,7 +29,7 @@ import org.amrvimag.bocateria.model.entity.Producto;
  */
 public final class Mainframe extends javax.swing.JFrame {
 
-    private final MainframeEventHandler buttonClickHandler = new MainframeEventHandler();
+    private final MainframeEventHandler eventHandler = new MainframeEventHandler();
     private Empleado emp = null;
 
     /**
@@ -38,7 +38,7 @@ public final class Mainframe extends javax.swing.JFrame {
     public Mainframe() {
         initComponents();
 
-        for (Entry<Producto.Tipos, Image> tipo : buttonClickHandler
+        for (Entry<Producto.Tipos, Image> tipo : eventHandler
                 .loadProductTypes().entrySet())
             this.addType(tipo.getKey(), tipo.getValue());
 
@@ -86,7 +86,7 @@ public final class Mainframe extends javax.swing.JFrame {
                 selectedProductTypeButton = button;
 
             productSelectListModel.clear();
-            for (Producto producto : buttonClickHandler
+            for (Producto producto : eventHandler
                     .productTypeSelectButtonClick(getKeyByValue(button), selectedProductTypeButton != null))
                 productSelectListModel.addElement(producto);
 
@@ -361,23 +361,24 @@ public final class Mainframe extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonEmployeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEmployeeMouseClicked
-        buttonClickHandler.employeeButtonClick();
+        eventHandler.employeeButtonClick();
     }//GEN-LAST:event_buttonEmployeeMouseClicked
 
     private void buttonConfigurationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonConfigurationMouseClicked
-        buttonClickHandler.configurationButtonClick();
+        eventHandler.configurationButtonClick();
     }//GEN-LAST:event_buttonConfigurationMouseClicked
 
     private void buttonPagarEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarEfectivoActionPerformed
-        buttonClickHandler.pagarEffectivoButtonClick();
+        eventHandler.pagarEffectivoButtonClick();
     }//GEN-LAST:event_buttonPagarEfectivoActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
-        buttonClickHandler.cancelarButtonClick();
+        eventHandler.cancelarButtonClick();
+        listItemSetItems();
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void buttonPagarTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarTarjetaActionPerformed
-        buttonClickHandler.pagarTarjetaButtonClick();
+        eventHandler.pagarTarjetaButtonClick();
     }//GEN-LAST:event_buttonPagarTarjetaActionPerformed
 
     private void listItemViewValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listItemViewValueChanged
@@ -385,7 +386,7 @@ public final class Mainframe extends javax.swing.JFrame {
             return;
 
         final int index = listItemView.getSelectedIndex();
-        buttonClickHandler
+        eventHandler
                 .removeProductoButtonClick(index, productItemListModel
                         .elementAt(index));
 
@@ -418,7 +419,7 @@ public final class Mainframe extends javax.swing.JFrame {
             return;
 
         final int index = listItemSelect.getSelectedIndex();
-        buttonClickHandler
+        eventHandler
                 .addProductoItemButtonClick(index, productSelectListModel
                         .elementAt(index));
 
@@ -428,7 +429,7 @@ public final class Mainframe extends javax.swing.JFrame {
 
     private void listItemSetItems() {
         productItemListModel.clear();
-        for (Producto prod : buttonClickHandler.getLoadedProductos())
+        for (Producto prod : eventHandler.getLoadedProductos())
             productItemListModel.addElement(prod);
     }
 
