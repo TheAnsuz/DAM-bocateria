@@ -2,6 +2,8 @@ package org.amrvimag.bocateria.events;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.amrvimag.bocateria.controller.ControllerDAO;
 import org.amrvimag.bocateria.model.entity.Venta;
 
 /**
@@ -11,8 +13,8 @@ import org.amrvimag.bocateria.model.entity.Venta;
 public class VentasDiariasEventHandler {
 
     public List<Venta> onLoad() {
-        
-        return new ArrayList<>();
+        System.out.println(ControllerDAO.getVentas());
+        return ControllerDAO.getVentas();
     }
     
 }

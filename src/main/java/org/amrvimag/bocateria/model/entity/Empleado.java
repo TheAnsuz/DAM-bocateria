@@ -1,5 +1,8 @@
 package org.amrvimag.bocateria.model.entity;
 
+/**
+ *
+ */
 public class Empleado {
 
     private final String id;
@@ -34,10 +37,6 @@ public class Empleado {
 
     @Override
     public String toString() {
-        return "Empleado{" +
-                "id='" + id + '\'' +
-                ", nombre='" + name + '\'' +
-                ", comision=" + comision +
-                '}';
+        return "ID: " + id + ", Nombre: " + name;
     }
 }

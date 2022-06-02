@@ -11,22 +11,29 @@ public class Ticket {
     private final String employee;
     private final Date date;
     private final HashMap<Producto, Integer> prods = new HashMap<>();
+    private final double price;
+    private final boolean tarjeta;
 
-    public Ticket(Venta venta, List<Producto> prods) {
+    public Ticket(Venta venta, List<Producto> prods, boolean tarjeta) {
         this.id = venta.getId();
         this.date = venta.getTimestamp();
         this.employee = venta.getEmp().getName();
         getProdsInMap(prods);
+        this.price = venta.getTotal();
+        this.tarjeta = tarjeta;
 
         System.out.println(generateText());
     }
 
     private void getProdsInMap(List<Producto> prods) {
         for (Producto p : prods) {
-            if (!this.prods.containsKey(p))
+            System.out.println(p + " : " + (this.prods.containsKey(p) ? "Ya existe" : "No existe"));
+            if (!this.prods.containsKey(p)) {
                 this.prods.put(p, 1);
-            else
+            }
+            else {
                 this.prods.replace(p, this.prods.get(p) + 1);
+            }
         }
     }
 
@@ -49,7 +56,7 @@ public class Ticket {
     public String generateText() {
         StringBuilder ticket = new StringBuilder();
         ticket.append("=======================================\n");
-        ticket.append(String.format("%28s %n", "Bocatería Amogus"));
+        ticket.append(String.format("%24s %n", "Bocatería"));
         ticket.append("=======================================\n");
         ticket.append("Le atendió: ").append(employee).append("\n");
         ticket.append("ID: ").append(id).append("\n");
@@ -61,6 +68,9 @@ public class Ticket {
             Integer c = e.getValue();
             ticket.append(String.format("%-21s %5s %11s%n", p.getName(), c, p.getPrice() * c + "€"));
         }
+        ticket.append("---------------------------------------\n");
+        ticket.append("Precio total: ").append(price).append("€").append("\n");
+        ticket.append("Modo de pago: ").append(tarjeta ? "tarjeta" : "en efectivo").append("\n");
         ticket.append("\n");
         ticket.append("=======================================\n");
         ticket.append(String.format("%31s %n", "¡Gracias por su compra!"));

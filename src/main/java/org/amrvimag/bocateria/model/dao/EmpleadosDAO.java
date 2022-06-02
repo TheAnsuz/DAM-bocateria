@@ -16,20 +16,21 @@ public class EmpleadosDAO {
      * @return The array of employees
      * @throws SQLException
      */
-    public static Empleado[] getAllEmps() throws SQLException {
+    public static ArrayList<Empleado> getAllEmps() throws SQLException {
         Connection con = ConnectionDB.getConnection();
         String query = "SELECT * FROM empleados";
         PreparedStatement pst = con.prepareStatement(query);
         ResultSet rs = pst.executeQuery();
-        ArrayList<Empleado> empList = new ArrayList<>();
+
+        ArrayList<Empleado> emps = new ArrayList<>();
         while (rs.next()) {
             String id = rs.getString(1);
             String name = rs.getString(2);
             double comision = rs.getDouble(3);
-            empList.add(new Empleado(id, name, comision));
+            emps.add(new Empleado(id, name, comision));
         }
 
-        return empList.toArray(new Empleado[0]);
+        return emps;
     }
 
     /**

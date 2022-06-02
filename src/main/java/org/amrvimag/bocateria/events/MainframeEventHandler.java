@@ -1,10 +1,12 @@
 package org.amrvimag.bocateria.events;
 
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.amrvimag.bocateria.controller.ControllerDAO;
+import org.amrvimag.bocateria.controller.MainController;
 import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.view.ViewWrapper;
 
@@ -36,21 +38,25 @@ public class MainframeEventHandler {
      * Evento al hacer click en el boton de pagar con efectivo
      */
     public void pagarEffectivoButtonClick() {
-        System.out.println("Click - pagar en efectivo");
+        if (MainController.getInstance().getCurrentEmpleado() == null)
+            return;
+        MainController.getInstance().pay(false);
     }
 
     /**
      * Evento al hacer click en el boton pagar con tarjeta
      */
     public void pagarTarjetaButtonClick() {
-        System.out.println("Click - pagar con tarjeta");
+        if (MainController.getInstance().getCurrentEmpleado() == null)
+            return;
+        MainController.getInstance().pay(true);
     }
 
     /**
      * Evento al hacer click en el boton de cancelar pedido
      */
     public void cancelarButtonClick() {
-        System.out.println("Click - cancelar pedido");
+        MainController.getInstance().clearCurrentVenta();
     }
 
     /**
@@ -62,10 +68,7 @@ public class MainframeEventHandler {
      * @return una lista con todos los productos de ese tipo
      */
     public List<Producto> productTypeSelectButtonClick(Producto.Tipos type, boolean isSelected) {
-        System.out
-                .println("Click - " + (isSelected ? "seleccionada" : "desseleccionada") + " categoria" + type
-                        .getNombre());
-        return new ArrayList<>();
+        return ControllerDAO.getAllProductos(type);
     }
 
     /**
@@ -76,9 +79,7 @@ public class MainframeEventHandler {
      * @param producto referencia al producto en la lista
      */
     public void addProductoItemButtonClick(int index, Producto producto) {
-        System.out
-                .println("Se quiere añadir el producto nº" + index + " de la lista: " + producto
-                        .getName());
+        MainController.getInstance().addCurrentVenta(producto);
     }
 
     /**
@@ -89,9 +90,7 @@ public class MainframeEventHandler {
      * @param producto referencia del producto en la lista de ventas
      */
     public void removeProductoButtonClick(int index, Producto producto) {
-        System.out
-                .println("Se quiere eliminar el producto nº" + index + " de la lista: " + producto
-                        .getName());
+        MainController.getInstance().removeCurrentVenta(index);
     }
 
     /**
@@ -100,8 +99,7 @@ public class MainframeEventHandler {
      * @return los productos que tendrá la venta
      */
     public List<Producto> getLoadedProductos() {
-
-        return new ArrayList<>();
+        return MainController.getInstance().getCurrentVenta();
     }
 
     /**
@@ -112,8 +110,12 @@ public class MainframeEventHandler {
      * @return un mapa con el tipo de producto y su imagen
      */
     public Map<Producto.Tipos, Image> loadProductTypes() {
+        Map<Producto.Tipos, Image> map = new HashMap<>();
 
-        return new HashMap<>();
+        for (Producto.Tipos prod : Producto.Tipos.values()) {
+            map.put(prod, prod.getImage());
+        }
+        return map;
     }
 
 }

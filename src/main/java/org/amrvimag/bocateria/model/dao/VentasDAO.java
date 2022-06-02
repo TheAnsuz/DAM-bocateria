@@ -16,21 +16,20 @@ public class VentasDAO {
      * @return An array with al the sales
      * @throws SQLException
      */
-    public static Venta[] getVentas() throws SQLException {
+    public static ArrayList<Venta> getVentas() throws SQLException {
         Connection con = ConnectionDB.getConnection();
         String query = "SELECT * FROM ventas";
         PreparedStatement pst = con.prepareStatement(query);
         ResultSet rs = pst.executeQuery();
-        ArrayList<Venta> ventasList = new ArrayList<>();
+        ArrayList<Venta> ventas = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt(1);
             Timestamp date = rs.getTimestamp(2);
             String idEmp = rs.getString(3);
             double total = rs.getDouble(4);
-            ventasList.add(new Venta(id, date, EmpleadosDAO.getEmp(idEmp), total));
+            ventas.add(new Venta(id, date, EmpleadosDAO.getEmp(idEmp), total));
         }
-
-        return ventasList.toArray(new Venta[0]);
+        return ventas;
     }
 
     /**

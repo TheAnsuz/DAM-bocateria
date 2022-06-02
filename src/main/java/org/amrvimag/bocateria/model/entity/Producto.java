@@ -1,6 +1,8 @@
 package org.amrvimag.bocateria.model.entity;
 
-import javax.swing.*;
+import org.amrvimag.bocateria.ResourceIO;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Producto {
@@ -62,24 +64,24 @@ public class Producto {
     }
 
     public enum Tipos {
-        BOCADILLO("bocadillos", new ImageIcon()),
-        BEBIDA("bebidas", new ImageIcon()),
-        OTRO("otros", new ImageIcon());
+        BOCADILLO("bocadillos", ResourceIO.resourceImage("image/bocadillo.png")),
+        BEBIDA("bebidas", ResourceIO.resourceImage("image/undefined.png")),
+        OTRO("otros", ResourceIO.resourceImage("image/undefined.png"));
 
-        private Tipos(String nombre, ImageIcon icon) {
+        Tipos(String nombre, Image image) {
             this.nombre = nombre;
-            this.icon = icon;
+            this.image = image;
         }
 
         private String nombre;
-        private ImageIcon icon;
+        private Image image;
 
         public String getNombre() {
             return nombre;
         }
 
-        public ImageIcon getIcon() {
-            return icon;
+        public Image getImage() {
+            return image;
         }
     }
 }

@@ -17,23 +17,22 @@ public class ProductosDAO {
      * @return The array of products present in that table
      * @throws SQLException
      */
-    public static Producto[] getProductos(Producto.Tipos type) throws SQLException, IOException {
+    public static ArrayList<Producto> getProductos(Producto.Tipos type) throws SQLException, IOException {
         Connection con = ConnectionDB.getConnection();
         String query = "SELECT * FROM " + type.getNombre();
         PreparedStatement pst = con.prepareStatement(query);
         ResultSet rs = pst.executeQuery();
-        ArrayList<Producto> prodList = new ArrayList<>();
+        ArrayList<Producto> prods = new ArrayList<>();
         while (rs.next()) {
             int id = rs.getInt(1);
             String name = rs.getString(2);
             double price = rs.getDouble(3);
             Blob b = rs.getBlob(4);
             BufferedImage img = ImageIO.read(b.getBinaryStream());
-            System.out.println(img);
-            prodList.add(new Producto(type, id, name, price, img));
+            prods.add(new Producto(type, id, name, price, img));
         }
 
-        return prodList.toArray(new Producto[0]);
+        return prods;
     }
 
     /**
