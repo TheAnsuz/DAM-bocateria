@@ -182,7 +182,7 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
             tabelModel.addRow(new Object[]{
                 venta.getId(),
                 ViewWrapper.getView().formatTime(venta.getTimestamp()
-                .toInstant()),
+                .toLocalDateTime()),
                 venta.getEmp().getName(),
                 ViewWrapper.getView().formatNumber(venta.getTotal())
             });
