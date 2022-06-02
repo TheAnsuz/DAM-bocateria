@@ -86,8 +86,9 @@ public final class Mainframe extends javax.swing.JFrame {
                 selectedProductTypeButton = button;
 
             productSelectListModel.clear();
-            productSelectListModel.addAll(buttonClickHandler
-                    .productTypeSelectButtonClick(getKeyByValue(button), selectedProductTypeButton != null));
+            for (Producto producto : buttonClickHandler
+                    .productTypeSelectButtonClick(getKeyByValue(button), selectedProductTypeButton != null))
+                productSelectListModel.addElement(producto);
 
         });
 
@@ -427,7 +428,8 @@ public final class Mainframe extends javax.swing.JFrame {
 
     private void listItemSetItems() {
         productItemListModel.clear();
-        productItemListModel.addAll(buttonClickHandler.getLoadedProductos());
+        for (Producto prod : buttonClickHandler.getLoadedProductos())
+            productItemListModel.addElement(prod);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
