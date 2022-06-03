@@ -58,12 +58,15 @@ public class ProductInfoPanel extends javax.swing.JPanel {
         icon.setMinimumSize(new java.awt.Dimension(64, 64));
         icon.setPreferredSize(new java.awt.Dimension(64, 64));
 
+        detailText.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         detailText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         detailText.setText("${cost}");
 
+        primaryText.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         primaryText.setText("jLabel2");
 
-        secondaryText.setForeground(javax.swing.UIManager.getDefaults().getColor("Button.disabledText"));
+        secondaryText.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        secondaryText.setForeground(javax.swing.UIManager.getDefaults().getColor("Label.disabledForeground"));
         secondaryText.setText("jLabel2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

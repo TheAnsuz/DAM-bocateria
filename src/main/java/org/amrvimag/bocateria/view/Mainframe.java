@@ -1,8 +1,10 @@
 package org.amrvimag.bocateria.view;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -106,7 +108,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
             buttonEmployee.setText("Empleado sin seleccionar");
         else
             buttonEmployee.setText(emp.getName());
-        
+
         buttonEmployee.setSize(buttonEmployee.getPreferredSize());
         this.emp = emp;
     }
@@ -116,10 +118,9 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         int state = super.getExtendedState();
         super.pack(); //To change body of generated methods, choose Tools | Templates.
         super.setExtendedState(state);
+        System.out.println(Arrays.toString(colors));
     }
 
-    
-    
     public Empleado getEmpleado() {
         return this.emp;
     }
@@ -209,6 +210,8 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         panelTicket.setMaximumSize(new java.awt.Dimension(375, 32767));
         panelTicket.setMinimumSize(new java.awt.Dimension(375, 304));
         panelTicket.setPreferredSize(new java.awt.Dimension(375, 304));
+
+        panelScrollItemView.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         listItemView.setModel(productItemListModel);
         listItemView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -446,21 +449,28 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         listItemSetItems();
     }//GEN-LAST:event_listItemViewValueChanged
 
+    private final Color[] colors = new Color[]{
+        javax.swing.UIManager.getDefaults() // selected background - 0
+        .getColor("Button.selectedBackground"),
+        javax.swing.UIManager.getDefaults() // selected foreground - 1
+        .getColor("Button.selectedForeground"),
+        javax.swing.UIManager.getDefaults() // normal background --- 2
+        .getColor("Button.background"),
+        javax.swing.UIManager.getDefaults() // normal foreground --- 3
+        .getColor("Button.foreground")
+    };
+
     private void selectPlasticButton(JComponent button, boolean selected) {
         if (selected) {
-            button.setBackground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.selectedBackground"));
-            button.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.selectedForeground"));
+            button.setBackground(colors[0]);
+            button.setForeground(colors[1]);
         } else {
-            button.setBackground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.background"));
-            button.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.foreground"));
+            button.setBackground(colors[2]);
+            button.setForeground(colors[3]);
         }
-            button.repaint();
+        button.repaint();
     }
-    
+
     private void buttonEmployeeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEmployeeMouseEntered
         this.selectPlasticButton(buttonEmployee, true);
     }//GEN-LAST:event_buttonEmployeeMouseEntered

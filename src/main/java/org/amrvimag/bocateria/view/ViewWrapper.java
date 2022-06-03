@@ -32,7 +32,6 @@ public class ViewWrapper implements Configuration.ConfigurationListener {
     public static void initialize() {
         if (wrapper == null) {
             wrapper = new ViewWrapper();
-            Configuration.addListener(wrapper);
         }
     }
 
@@ -104,6 +103,7 @@ public class ViewWrapper implements Configuration.ConfigurationListener {
     private final TicketDialog ticketDialog;
 
     private ViewWrapper() {
+        Configuration.addListener(this);
         mainframe = new Mainframe();
         configurationDialog = new ConfigurationDialog(mainframe, true);
         empleadoDialog = new EmpleadoDialog(mainframe, true);

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.UIManager;
 import org.amrvimag.bocateria.ResourceIO;
 import org.amrvimag.bocateria.model.entity.Producto;
 
@@ -14,15 +15,13 @@ import org.amrvimag.bocateria.model.entity.Producto;
  */
 public class ProductInfoRenderer<E extends Producto> extends ProductInfoPanel implements ListCellRenderer<Producto> {
 
-    private final Color defaultColor;
-
     public ProductInfoRenderer() {
         super();
-        defaultColor = super.getBackground();
     }
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Producto> list, Producto value, int index, boolean isSelected, boolean cellHasFocus) {
+        Color defaultColor = UIManager.getDefaults().getColor("List.background");
         super
                 .setBackground(index % 2 == 0 ? defaultColor.brighter() : defaultColor
                         .darker());
