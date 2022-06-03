@@ -22,9 +22,10 @@ public class Launcher {
             Logger.getLogger(Launcher.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
+
+        ViewWrapper.initialize();
         ConnectionDB.createConnection(Configuration.getConfig("sql.url"),
                 Configuration.getConfig("sql.username"),
                 Configuration.getConfig("sql.password"));
-        ViewWrapper.initialize();
     }
 }

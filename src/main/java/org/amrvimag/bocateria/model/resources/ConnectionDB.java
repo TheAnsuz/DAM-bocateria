@@ -11,6 +11,7 @@ public class ConnectionDB implements Configuration.ConfigurationListener {
     private static Connection con;
 
     public static void createConnection(String url, String usr, String password) {
+        System.out.println(url + ", " + usr + ", " + password);
         if (con != null)
             return;
 
