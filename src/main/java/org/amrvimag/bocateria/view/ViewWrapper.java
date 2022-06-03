@@ -6,12 +6,16 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import org.amrvimag.bocateria.Configuration;
+import org.amrvimag.bocateria.ResourceIO;
 import org.amrvimag.bocateria.model.entity.Empleado;
 import org.amrvimag.bocateria.model.entity.Ticket;
 
@@ -101,6 +105,7 @@ public class ViewWrapper implements Configuration.ConfigurationListener {
     private final ErrorDialog errorDialog;
     private final VentasDialog ventasDialog;
     private final TicketDialog ticketDialog;
+    private static final Icon warningIcon = new ImageIcon(ResourceIO.resourceImage("image/warning.png"));
 
     private ViewWrapper() {
         Configuration.addListener(this);
@@ -113,6 +118,10 @@ public class ViewWrapper implements Configuration.ConfigurationListener {
         validateConfig();
         mainframe.setVisible(true);
         Configuration.addListener(mainframe);
+    }
+
+    public void showWarning(String text) {
+        JOptionPane.showMessageDialog(mainframe, text, "AVISO", JOptionPane.WARNING_MESSAGE, warningIcon);
     }
 
     public String formatTime(TemporalAccessor date) {

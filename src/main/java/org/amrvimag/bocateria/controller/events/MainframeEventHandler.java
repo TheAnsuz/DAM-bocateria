@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.amrvimag.bocateria.controller.ControllerDAO;
 import org.amrvimag.bocateria.controller.DataController;
 import org.amrvimag.bocateria.model.entity.Producto;
@@ -38,8 +37,10 @@ public class MainframeEventHandler {
      * Evento al hacer click en el boton de pagar con efectivo
      */
     public boolean pagarEffectivoButtonClick() {
-        if (ViewWrapper.getView().getEmpleado() == null)
+        if (ViewWrapper.getView().getEmpleado() == null) {
+            ViewWrapper.getView().showWarning("Debes seleccionar un empleado.");
             return false;
+        }
         DataController.getInstance().pay(false);
         return true;
     }
@@ -48,8 +49,10 @@ public class MainframeEventHandler {
      * Evento al hacer click en el boton pagar con tarjeta
      */
     public boolean pagarTarjetaButtonClick() {
-        if (ViewWrapper.getView().getEmpleado() == null)
+        if (ViewWrapper.getView().getEmpleado() == null) {
+            ViewWrapper.getView().showWarning("Debes seleccionar un empleado.");
             return false;
+        }
         DataController.getInstance().pay(true);
         return true;
     }

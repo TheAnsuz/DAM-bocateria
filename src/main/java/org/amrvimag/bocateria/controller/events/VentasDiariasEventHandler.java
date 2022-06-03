@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.amrvimag.bocateria.controller.ControllerDAO;
 import org.amrvimag.bocateria.model.entity.Venta;
+import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
 /**
  *
@@ -18,6 +19,9 @@ public class VentasDiariasEventHandler {
      * @return The list of ventas that happened today
      */
     public List<Venta> onLoad() {
+        if (ConnectionDB.getConnection() == null)
+            return new ArrayList<>();
+        
         ArrayList<Venta> ventasToday = new ArrayList<>();
         for (Venta v : ControllerDAO.getVentas()) {
             // Only the ventas that happened today will be displayed on the table
