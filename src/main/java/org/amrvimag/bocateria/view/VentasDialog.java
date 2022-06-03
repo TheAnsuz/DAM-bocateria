@@ -2,6 +2,8 @@ package org.amrvimag.bocateria.view;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import org.amrvimag.bocateria.controller.events.VentasDiariasEventHandler;
 import org.amrvimag.bocateria.model.entity.Venta;
@@ -14,6 +16,7 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
 
     private final VentasDiariasEventHandler eventHandler = new VentasDiariasEventHandler();
     private final DefaultTableModel tableModel;
+    private final DefaultTableCellRenderer columnRenderer = new DefaultTableCellRenderer();
 
     /**
      * Creates new form VentasDialog
@@ -21,6 +24,7 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
     public VentasDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         super.addWindowListener(this);
+        columnRenderer.setHorizontalAlignment(JLabel.LEFT);
         initComponents();
         tableModel = (DefaultTableModel) jTable1.getModel();
     }
@@ -77,6 +81,7 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
         jScrollPane2.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(0).setCellRenderer(columnRenderer);
             jTable1.getColumnModel().getColumn(1).setResizable(false);
             jTable1.getColumnModel().getColumn(2).setResizable(false);
             jTable1.getColumnModel().getColumn(3).setResizable(false);
@@ -143,7 +148,7 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
 
     @Override
     public void windowOpened(WindowEvent e) {
-        loadElements();
+        
     }
 
     @Override
@@ -165,6 +170,7 @@ public class VentasDialog extends javax.swing.JDialog implements WindowListener 
 
     @Override
     public void windowActivated(WindowEvent e) {
+        loadElements();
     }
 
     @Override
