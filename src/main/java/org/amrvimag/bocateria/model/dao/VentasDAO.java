@@ -28,6 +28,7 @@ public class VentasDAO {
             String idEmp = rs.getString(3);
             double total = rs.getDouble(4);
             ventas.add(new Venta(id, date, EmpleadosDAO.getEmp(idEmp), total));
+            System.out.println(new Venta(id, date, EmpleadosDAO.getEmp(idEmp), total));
         }
         return ventas;
     }
@@ -46,6 +47,7 @@ public class VentasDAO {
         pst.setTimestamp(1, new java.sql.Timestamp(new Date().getTime()));
         pst.setString(2, emp.getId());
         pst.setDouble(3, total);
+        System.out.println("VENTA AÑADIDA");
 
         return pst.executeUpdate() > 0;
     }
