@@ -2,7 +2,6 @@ package org.amrvimag.bocateria.model.entity;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +51,20 @@ public class Ticket {
         return time;
     }
 
+    private void appendProduct(StringBuilder builder, Producto producto, Integer ammount) {
+
+        while (producto.getPrice() * ammount > 999) {
+            int cantidad = 1;
+            double precio = 1;
+            builder.append(
+                    String.format("%-21s %5s %11s%n",
+                            producto.getName(), cantidad, precio * cantidad + "€")
+            );
+
+        }
+
+    }
+
     public String getTicketText() {
         String timeFormatted = new SimpleDateFormat("dd/MM HH:mm:ss").format(time);
         StringBuilder ticket = new StringBuilder();
@@ -65,9 +78,7 @@ public class Ticket {
         ticket.append("Producto              Cant.      Precio\n");
         ticket.append("--------              -----     -------\n");
         for (Map.Entry<Producto, Integer> e : prods.entrySet()) {
-            Producto p = e.getKey();
-            Integer c = e.getValue();
-            ticket.append(String.format("%-21s %5s %11s%n", p.getName(), c, p.getPrice() * c + "€"));
+            appendProduct(ticket, e.getKey(), e.getValue());
         }
         ticket.append("---------------------------------------\n");
         ticket.append(String.format("%40s", price + "€\n"));
