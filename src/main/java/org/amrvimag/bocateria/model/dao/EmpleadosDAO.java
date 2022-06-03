@@ -13,6 +13,7 @@ public class EmpleadosDAO {
 
     /**
      * Gets an array of all the employees
+     *
      * @return The array of employees
      * @throws SQLException
      */
@@ -35,6 +36,7 @@ public class EmpleadosDAO {
 
     /**
      * Gets the employee with the specified ID
+     *
      * @param id The ID of the employee
      * @return The employee with the specified ID
      * @throws SQLException

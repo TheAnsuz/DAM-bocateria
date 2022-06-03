@@ -14,11 +14,13 @@ import org.amrvimag.bocateria.view.ViewWrapper;
 public class Launcher {
 
     public static void main(String[] args) {
-        System.err.println("AVISO: el programa esta creado para mostrar en consola los errores a pesar de que funcione perfectamente.");
+        System.err
+                .println("AVISO: el programa esta creado para mostrar en consola los errores a pesar de que funcione perfectamente.");
         try {
             ViewWrapper.setLookAndFeelFromConfig();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Launcher.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Launcher.class.getName())
+                    .log(Level.SEVERE, null, ex);
         }
         ConnectionDB.createConnection(Configuration.getConfig("sql.url"),
                 Configuration.getConfig("sql.username"),

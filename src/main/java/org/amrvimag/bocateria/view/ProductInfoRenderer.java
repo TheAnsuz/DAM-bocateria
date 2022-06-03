@@ -23,10 +23,14 @@ public class ProductInfoRenderer<E extends Producto> extends ProductInfoPanel im
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Producto> list, Producto value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.setBackground(index % 2 == 0 ? defaultColor.brighter() : defaultColor.darker());
+        super
+                .setBackground(index % 2 == 0 ? defaultColor.brighter() : defaultColor
+                        .darker());
         if (isSelected)
-            super.setBackground(index % 2 == 0 ? super.getBackground().brighter() : super.getBackground().darker());
-        super.setImage(value.getImg() == null ? ResourceIO.resourceImage("image/undefined.png", 64, 64) : value.getImg());
+            super.setBackground(index % 2 == 0 ? super.getBackground()
+                    .brighter() : super.getBackground().darker());
+        super.setImage(value.getImg() == null ? ResourceIO
+                .resourceImage("image/undefined.png", 64, 64) : value.getImg());
         super.setPrimaryText(value.getName());
         super.setSecondaryText(value.getType().getNombre());
         super.setDetailText(value.getPrice() + "€");

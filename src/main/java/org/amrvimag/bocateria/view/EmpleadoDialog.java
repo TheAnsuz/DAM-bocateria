@@ -16,6 +16,7 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
 
     private final EmpleadoSearchEventHandler eventHandler = new EmpleadoSearchEventHandler();
     private final DefaultListModel<Empleado> listModel = new DefaultListModel<>();
+
     /**
      * Creates new form EmpleadoDialog
      */
@@ -123,70 +124,31 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
     }// </editor-fold>//GEN-END:initComponents
 
     private void inputTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputTextActionPerformed
-        displayEmpleados(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
+        displayEmpleados(inputText.getText(), checkIgnorecase.isSelected(), checkContains
+                .isSelected());
     }//GEN-LAST:event_inputTextActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        displayEmpleados(inputText.getText(), checkIgnorecase.isSelected(), checkContains.isSelected());
+        displayEmpleados(inputText.getText(), checkIgnorecase.isSelected(), checkContains
+                .isSelected());
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
 
         if (!evt.getValueIsAdjusting())
             return;
-        
-        final boolean shouldClose = eventHandler.onEmpleadoSelect(listModel.elementAt(jList1.getSelectedIndex()));
+
+        final boolean shouldClose = eventHandler.onEmpleadoSelect(listModel
+                .elementAt(jList1.getSelectedIndex()));
         super.setVisible(!shouldClose);
     }//GEN-LAST:event_jList1ValueChanged
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EmpleadoDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EmpleadoDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EmpleadoDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EmpleadoDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                EmpleadoDialog dialog = new EmpleadoDialog(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
 
     private void displayEmpleados(String text, boolean ignoreCase, boolean contains) {
         listModel.clear();
         for (Empleado emp : eventHandler.onSearch(text, ignoreCase, contains))
             listModel.addElement(emp);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupCaseContainers;
     private javax.swing.JRadioButton checkContains;
@@ -210,26 +172,26 @@ public class EmpleadoDialog extends javax.swing.JDialog implements WindowListene
 
     @Override
     public void windowClosed(WindowEvent e) {
-    
+
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
-    
+
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-    
+
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
-    
+
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-    
+
     }
 }

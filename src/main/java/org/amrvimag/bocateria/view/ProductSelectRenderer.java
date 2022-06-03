@@ -23,7 +23,7 @@ public class ProductSelectRenderer<E extends Producto> extends ProductSelectPane
                 .resourceImage("image/undefined.png", 64, 64) : value.getImg());
         super.setName(value.getName());
         super.setCost(value.getPrice());
-        
+
         super.setSelected(isSelected);
 
         return this;

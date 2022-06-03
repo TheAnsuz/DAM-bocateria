@@ -26,7 +26,7 @@ public class MainframeEventHandler {
     public void ventasButtonClick() {
         ViewWrapper.getView().showVentas();
     }
-    
+
     /**
      * Evento al hacer click en el boton configuracion
      */

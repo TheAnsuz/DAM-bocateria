@@ -19,22 +19,24 @@ public class ProductSelectPanel extends javax.swing.JPanel {
     public void setImage(Image image) {
         icon.setIcon(new ImageIcon(image));
     }
-    
+
     public void setCost(double cost) {
         this.cost.setText(ViewWrapper.getView().formatNumber(cost));
     }
-    
+
     public void setName(String name) {
         this.name.setText(name);
     }
-    
+
     public void setSelected(boolean selected) {
         if (selected)
-            super.setBackground(javax.swing.UIManager.getDefaults().getColor("Buttons.disabledBackground"));
+            super.setBackground(javax.swing.UIManager.getDefaults()
+                    .getColor("Buttons.disabledBackground"));
         else
-            super.setBackground(javax.swing.UIManager.getDefaults().getColor("Panel.background"));
+            super.setBackground(javax.swing.UIManager.getDefaults()
+                    .getColor("Panel.background"));
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -21,23 +21,23 @@ public class ProductInfoPanel extends javax.swing.JPanel {
     public void setImage(Image image) {
         icon.setIcon(new ImageIcon(image));
     }
-    
+
     public void setImage(Icon icon) {
         this.icon.setIcon(icon);
     }
-    
+
     public void setPrimaryText(String text) {
         primaryText.setText(text);
     }
-    
+
     public void setSecondaryText(String text) {
         secondaryText.setText(text);
     }
-    
+
     public void setDetailText(String text) {
         detailText.setText(text);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
