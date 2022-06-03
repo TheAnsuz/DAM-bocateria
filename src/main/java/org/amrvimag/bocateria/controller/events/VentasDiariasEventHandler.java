@@ -21,7 +21,7 @@ public class VentasDiariasEventHandler {
     public List<Venta> onLoad() {
         if (ConnectionDB.getConnection() == null)
             return new ArrayList<>();
-        
+
         ArrayList<Venta> ventasToday = new ArrayList<>();
         for (Venta v : ControllerDAO.getVentas()) {
             // Only the ventas that happened today will be displayed on the table
@@ -29,6 +29,13 @@ public class VentasDiariasEventHandler {
                 ventasToday.add(v);
         }
         return ventasToday;
+    }
+
+    public double getTotalVentas(List<Venta> ventas) {
+        double val = 0;
+        for (Venta venta : ventas)
+            val += venta.getTotal();
+        return val;
     }
 
 }
