@@ -3,7 +3,6 @@ package org.amrvimag.bocateria.controller.events;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.amrvimag.bocateria.controller.ControllerDAO;
 import org.amrvimag.bocateria.model.entity.Venta;
 

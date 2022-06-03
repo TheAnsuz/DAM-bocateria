@@ -1,22 +1,17 @@
 package org.amrvimag.bocateria.view;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.ResourceIO;
 import org.amrvimag.bocateria.controller.events.MainframeEventHandler;
@@ -47,8 +42,6 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         buttonVentas.setIcon(new ImageIcon(ResourceIO
                 .resourceImage("image/sells.png", 24, 24)));
 
-        super.setTitle(Configuration
-                .getDefaultConfig("aplication.name", "Tienda Amogus"));
         super.setIconImage(ResourceIO.resourceImage("image/icon.png", 32, 32));
         super.setMinimumSize(super.getSize());
         super.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
@@ -413,17 +406,17 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
 
     private void buttonPagarEfectivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarEfectivoActionPerformed
         if (eventHandler.pagarEffectivoButtonClick())
-            productItemListModel.clear();
+            listItemSetItems();
     }//GEN-LAST:event_buttonPagarEfectivoActionPerformed
 
     private void buttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelarActionPerformed
         eventHandler.cancelarButtonClick();
-        productItemListModel.clear();
+        listItemSetItems();
     }//GEN-LAST:event_buttonCancelarActionPerformed
 
     private void buttonPagarTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPagarTarjetaActionPerformed
         if (eventHandler.pagarTarjetaButtonClick())
-            productItemListModel.clear();
+            listItemSetItems();
     }//GEN-LAST:event_buttonPagarTarjetaActionPerformed
 
     private void listItemViewValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listItemViewValueChanged
