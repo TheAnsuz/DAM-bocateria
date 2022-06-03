@@ -52,21 +52,26 @@ public class Ticket {
     }
 
     private void appendProduct(StringBuilder builder, Producto producto, Integer ammount) {
+        final int cantidadMaxima = (int) Math.floor(999 / producto
+                .getPrice());
 
-        while (producto.getPrice() * ammount > 999) {
-            int cantidad = 1;
-            double precio = 1;
-            builder.append(
-                    String.format("%-21s %5s %11s%n",
-                            producto.getName(), cantidad, precio * cantidad + "€")
+        while (ammount > cantidadMaxima) {
+            ammount -= cantidadMaxima;
+            builder.append(String.format("%-21s %5s %11s%n",
+                    producto.getName(), cantidadMaxima, producto.getPrice() * cantidadMaxima + "€")
             );
-
         }
+
+        if (ammount > 0)
+            builder.append(String.format("%-21s %5s %11s%n",
+                    producto.getName(), ammount, producto.getPrice() * ammount + "€")
+            );
 
     }
 
     public String getTicketText() {
-        String timeFormatted = new SimpleDateFormat("dd/MM HH:mm:ss").format(time);
+        String timeFormatted = new SimpleDateFormat("dd/MM HH:mm:ss")
+                .format(time);
         StringBuilder ticket = new StringBuilder();
         ticket.append("=======================================\n");
         ticket.append(String.format("%24s %n", "Bocatería"));
@@ -82,7 +87,8 @@ public class Ticket {
         }
         ticket.append("---------------------------------------\n");
         ticket.append(String.format("%40s", price + "€\n"));
-        ticket.append("Modo de pago: ").append(tarjeta ? "tarjeta" : "en efectivo").append("\n");
+        ticket.append("Modo de pago: ")
+                .append(tarjeta ? "tarjeta" : "en efectivo").append("\n");
         ticket.append("\n");
         ticket.append("=======================================\n");
         ticket.append(String.format("%31s %n", "¡Gracias por su compra!"));
