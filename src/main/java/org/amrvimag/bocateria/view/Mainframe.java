@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -105,9 +104,9 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
 
     public void setEmpleado(Empleado emp) {
         if (emp == null)
-            buttonEmployee.setText("Empleado sin seleccionar");
+            buttonEmployee.setText(" Empleado sin seleccionar");
         else
-            buttonEmployee.setText(emp.getName());
+            buttonEmployee.setText(" " + emp.getName());
 
         buttonEmployee.setSize(buttonEmployee.getPreferredSize());
         this.emp = emp;
@@ -118,7 +117,8 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         int state = super.getExtendedState();
         super.pack(); //To change body of generated methods, choose Tools | Templates.
         super.setExtendedState(state);
-        System.out.println(Arrays.toString(colors));
+        assignColors();
+//        System.out.println(Arrays.toString(colors));
     }
 
     public Empleado getEmpleado() {
@@ -168,6 +168,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         buttonEmployee.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         buttonEmployee.setText(" ${emplado}");
         buttonEmployee.setBorder(new javax.swing.border.LineBorder(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"), 1, true));
+        buttonEmployee.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buttonEmployee.addMouseListener(formListener);
 
         buttonConfiguration.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
@@ -175,6 +176,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         buttonConfiguration.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         buttonConfiguration.setText("Configuración ");
         buttonConfiguration.setBorder(new javax.swing.border.LineBorder(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"), 1, true));
+        buttonConfiguration.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buttonConfiguration.addMouseListener(formListener);
 
         buttonVentas.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
@@ -182,6 +184,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         buttonVentas.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         buttonVentas.setText("Ventas ");
         buttonVentas.setBorder(new javax.swing.border.LineBorder(javax.swing.UIManager.getDefaults().getColor("Button.borderColor"), 1, true));
+        buttonVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         buttonVentas.addMouseListener(formListener);
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
@@ -449,7 +452,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         listItemSetItems();
     }//GEN-LAST:event_listItemViewValueChanged
 
-    private final Color[] colors = new Color[]{
+    private Color[] colors = new Color[]{
         javax.swing.UIManager.getDefaults() // selected background - 0
         .getColor("Button.selectedBackground"),
         javax.swing.UIManager.getDefaults() // selected foreground - 1
@@ -459,6 +462,19 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         javax.swing.UIManager.getDefaults() // normal foreground --- 3
         .getColor("Button.foreground")
     };
+
+    private Color[] assignColors() {
+        return colors = new Color[]{
+            javax.swing.UIManager.getDefaults() // selected background - 0
+            .getColor("Button.selectedBackground"),
+            javax.swing.UIManager.getDefaults() // selected foreground - 1
+            .getColor("Button.selectedForeground"),
+            javax.swing.UIManager.getDefaults() // normal background --- 2
+            .getColor("Button.background"),
+            javax.swing.UIManager.getDefaults() // normal foreground --- 3
+            .getColor("Button.foreground")
+        };
+    }
 
     private void selectPlasticButton(JComponent button, boolean selected) {
         if (selected) {

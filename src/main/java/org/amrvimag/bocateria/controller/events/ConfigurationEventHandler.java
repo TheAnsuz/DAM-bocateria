@@ -18,11 +18,12 @@ public class ConfigurationEventHandler {
     }
     
     public void onClose(String url, String user, String password, String laf, String appName) {
-        Configuration.setConfig("sql.url", url);
-        Configuration.setConfig("sql.username", user);
-        Configuration.setConfig("sql.password", password);
-        Configuration.setConfig("application.laf", laf);
-        Configuration.setConfig("application.name", appName);
+        // Si cancelas deberian de restablecerse los valores para que no cambie nada
+//        Configuration.setConfig("sql.url", url);
+//        Configuration.setConfig("sql.username", user);
+//        Configuration.setConfig("sql.password", password);
+//        Configuration.setConfig("application.laf", laf);
+//        Configuration.setConfig("application.name", appName);
     }
     
 }
