@@ -10,6 +10,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import org.amrvimag.bocateria.Configuration;
@@ -105,9 +106,20 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
             buttonEmployee.setText("Empleado sin seleccionar");
         else
             buttonEmployee.setText(emp.getName());
+        
+        buttonEmployee.setSize(buttonEmployee.getPreferredSize());
         this.emp = emp;
     }
 
+    @Override
+    public void pack() {
+        int state = super.getExtendedState();
+        super.pack(); //To change body of generated methods, choose Tools | Templates.
+        super.setExtendedState(state);
+    }
+
+    
+    
     public Empleado getEmpleado() {
         return this.emp;
     }
@@ -194,7 +206,9 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         );
 
         panelTicket.setBorder(javax.swing.BorderFactory.createLineBorder(javax.swing.UIManager.getDefaults().getColor("Component.borderColor")));
-        panelTicket.setMinimumSize(new java.awt.Dimension(330, 304));
+        panelTicket.setMaximumSize(new java.awt.Dimension(375, 32767));
+        panelTicket.setMinimumSize(new java.awt.Dimension(375, 304));
+        panelTicket.setPreferredSize(new java.awt.Dimension(375, 304));
 
         listItemView.setModel(productItemListModel);
         listItemView.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -231,10 +245,10 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
                     .addComponent(panelScrollItemView)
                     .addGroup(panelTicketLayout.createSequentialGroup()
                         .addGroup(panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                            .addComponent(buttonPagarEfectivo, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                             .addComponent(buttonPagarTarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))
+                        .addComponent(buttonCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))
                     .addGroup(panelTicketLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -286,7 +300,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
                 .addContainerGap()
                 .addGroup(panelProductsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(panelScrollProductType)
-                    .addComponent(panelScrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE))
+                    .addComponent(panelScrollProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 673, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelProductsLayout.setVerticalGroup(
@@ -321,7 +335,7 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelProducts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelTicket, javax.swing.GroupLayout.DEFAULT_SIZE, 596, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -432,24 +446,35 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         listItemSetItems();
     }//GEN-LAST:event_listItemViewValueChanged
 
+    private void selectPlasticButton(JComponent button, boolean selected) {
+        if (selected) {
+            button.setBackground(javax.swing.UIManager.getDefaults()
+                .getColor("Button.selectedBackground"));
+            button.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Button.selectedForeground"));
+        } else {
+            button.setBackground(javax.swing.UIManager.getDefaults()
+                .getColor("Button.background"));
+            button.setForeground(javax.swing.UIManager.getDefaults()
+                .getColor("Button.foreground"));
+        }
+            button.repaint();
+    }
+    
     private void buttonEmployeeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEmployeeMouseEntered
-        buttonEmployee.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Actions.Blue"));
+        this.selectPlasticButton(buttonEmployee, true);
     }//GEN-LAST:event_buttonEmployeeMouseEntered
 
     private void buttonConfigurationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonConfigurationMouseEntered
-        buttonConfiguration.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Actions.Blue"));
+        this.selectPlasticButton(buttonConfiguration, true);
     }//GEN-LAST:event_buttonConfigurationMouseEntered
 
     private void buttonEmployeeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonEmployeeMouseExited
-        buttonEmployee.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.foreground"));
+        this.selectPlasticButton(buttonEmployee, false);
     }//GEN-LAST:event_buttonEmployeeMouseExited
 
     private void buttonConfigurationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonConfigurationMouseExited
-        buttonConfiguration.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.foreground"));
+        this.selectPlasticButton(buttonConfiguration, false);
     }//GEN-LAST:event_buttonConfigurationMouseExited
 
     private void listItemSelectValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listItemSelectValueChanged
@@ -470,13 +495,11 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
     }//GEN-LAST:event_buttonVentasMouseClicked
 
     private void buttonVentasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonVentasMouseEntered
-        buttonVentas.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Actions.Blue"));
+        this.selectPlasticButton(buttonVentas, true);
     }//GEN-LAST:event_buttonVentasMouseEntered
 
     private void buttonVentasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonVentasMouseExited
-        buttonVentas.setForeground(javax.swing.UIManager.getDefaults()
-                .getColor("Button.foreground"));
+        this.selectPlasticButton(buttonVentas, false);
     }//GEN-LAST:event_buttonVentasMouseExited
 
     private void listItemSetItems() {

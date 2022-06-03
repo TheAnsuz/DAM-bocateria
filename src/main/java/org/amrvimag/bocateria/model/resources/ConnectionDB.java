@@ -10,7 +10,7 @@ public class ConnectionDB {
     private static Connection con;
 
     public static void createConnection(String url, String usr, String password) {
-        System.out.println(url + ", " + usr + ", " + password);
+//        System.out.println(url + ", " + usr + ", " + password);
         if (con != null)
             return;
 
@@ -27,7 +27,7 @@ public class ConnectionDB {
 
     public static void updateDatabaseConfig(String url, String username, String password) {
         con = null;
-        System.out.println("Updated database connection");
+//        System.out.println("Updated database connection");
         createConnection(url, username, password);
     }
 

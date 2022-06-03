@@ -16,7 +16,7 @@ public class Launcher {
         System.err
                 .println("AVISO: el programa esta creado para mostrar en consola los errores a pesar de que funcione perfectamente.");
         try {
-            ViewWrapper.setLookAndFeelFromConfig();
+            ViewWrapper.setLookAndFeel(Configuration.getConfig("application.laf"));
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Launcher.class.getName())
                     .log(Level.SEVERE, null, ex);

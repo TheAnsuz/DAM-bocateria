@@ -128,8 +128,10 @@ public class Configuration {
         if (old.equals(value))
             return false;
 
-        for (ConfigurationListener listener : listeners)
+        for (ConfigurationListener listener : listeners) {
+            System.out.println(listener.getClass().getName());
             listener.onChange(key, old, value);
+        }
 
         values.put(key, value);
         return true;

@@ -16,10 +16,10 @@ public class DataController implements Configuration.ConfigurationListener {
     }
 
     public static DataController getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new DataController();
-
-        Configuration.addListener(instance);
+            Configuration.addListener(instance);
+        }
         return instance;
     }
 
@@ -63,8 +63,8 @@ public class DataController implements Configuration.ConfigurationListener {
     @Override
     public void onChange(String key, String oldValue, String newValue) {
         String url = Configuration.getConfig("sql.url");
-        String user = Configuration.getConfig("sql.url");
-        String pass = Configuration.getConfig("sql.url");
+        String user = Configuration.getConfig("sql.username");
+        String pass = Configuration.getConfig("sql.password");
 
         switch (key) {
             case "sql.url":

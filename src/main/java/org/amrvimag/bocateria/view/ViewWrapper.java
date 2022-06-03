@@ -6,6 +6,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -18,7 +19,7 @@ import org.amrvimag.bocateria.model.entity.Ticket;
  *
  * @author Adrian MRV. aka AMRV || Ansuz
  */
-public class ViewWrapper {
+public class ViewWrapper implements Configuration.ConfigurationListener {
 
     private final DecimalFormat numberFormatter = new DecimalFormat("#,##0.00 \u00A4");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -29,8 +30,10 @@ public class ViewWrapper {
         "System Default"};
 
     public static void initialize() {
-        if (wrapper == null)
+        if (wrapper == null) {
             wrapper = new ViewWrapper();
+            Configuration.addListener(wrapper);
+        }
     }
 
     public static ViewWrapper getView() {
@@ -55,10 +58,10 @@ public class ViewWrapper {
         return supportedLookAndFeels;
     }
 
-    public static void setLookAndFeelFromConfig() throws
+    public static void setLookAndFeel(String laf) throws
             UnsupportedLookAndFeelException, ClassNotFoundException,
             InstantiationException, IllegalAccessException {
-        switch (Configuration.getDefaultConfig("application.laf", "Default")) {
+        switch (laf) {
             case "FlatDarkLaf":
             case "FlatDark":
                 FlatDarkLaf.setup();
@@ -166,6 +169,32 @@ public class ViewWrapper {
 
     public boolean seesVentasDialog() {
         return ventasDialog.isVisible();
+    }
+
+    @Override
+    public void onChange(String key, String oldValue, String newValue) {
+//        System.out.println("Drivethrough - " + key + " == " + oldValue + " > " + newValue);
+        if (key.equals("application.laf")) {
+//            System.out.println("Request LAF change");
+            try {
+                ViewWrapper.setLookAndFeel(newValue);
+                SwingUtilities.updateComponentTreeUI(mainframe);
+                SwingUtilities.updateComponentTreeUI(configurationDialog);
+                SwingUtilities.updateComponentTreeUI(empleadoDialog);
+                SwingUtilities.updateComponentTreeUI(errorDialog);
+                SwingUtilities.updateComponentTreeUI(ventasDialog);
+                SwingUtilities.updateComponentTreeUI(ticketDialog);
+                mainframe.pack();
+                configurationDialog.pack();
+                empleadoDialog.pack();
+                errorDialog.pack();
+                ventasDialog.pack();
+                ticketDialog.pack();
+
+            } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+                ViewWrapper.getView().showError(ex);
+            }
+        }
     }
 
 }

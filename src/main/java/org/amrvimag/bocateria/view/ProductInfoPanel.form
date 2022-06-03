@@ -20,11 +20,11 @@
               <Component id="icon" min="-2" pref="64" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="secondaryText" pref="130" max="32767" attributes="0"/>
+                  <Component id="secondaryText" pref="115" max="32767" attributes="0"/>
                   <Component id="primaryText" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
-              <Component id="detailText" pref="80" max="32767" attributes="0"/>
+              <Component id="detailText" pref="72" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -66,7 +66,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="detailText">
       <Properties>
-        <Property name="horizontalAlignment" type="int" value="4"/>
+        <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="${cost}"/>
       </Properties>
     </Component>

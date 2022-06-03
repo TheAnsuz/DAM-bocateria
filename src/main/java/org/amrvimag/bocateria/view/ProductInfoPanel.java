@@ -58,7 +58,7 @@ public class ProductInfoPanel extends javax.swing.JPanel {
         icon.setMinimumSize(new java.awt.Dimension(64, 64));
         icon.setPreferredSize(new java.awt.Dimension(64, 64));
 
-        detailText.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        detailText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         detailText.setText("${cost}");
 
         primaryText.setText("jLabel2");
@@ -74,10 +74,10 @@ public class ProductInfoPanel extends javax.swing.JPanel {
                 .addComponent(icon, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(secondaryText, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(secondaryText, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                     .addComponent(primaryText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(102, 102, 102)
-                .addComponent(detailText, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                .addComponent(detailText, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

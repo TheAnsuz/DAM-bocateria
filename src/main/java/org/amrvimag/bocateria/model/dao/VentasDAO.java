@@ -5,7 +5,6 @@ import org.amrvimag.bocateria.model.entity.Venta;
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -47,7 +46,7 @@ public class VentasDAO {
         pst.setTimestamp(1, new java.sql.Timestamp(new Date().getTime()));
         pst.setString(2, emp.getId());
         pst.setDouble(3, total);
-        System.out.println("VENTA AÑADIDA");
+//        System.out.println("VENTA AÑADIDA");
 
         return pst.executeUpdate() > 0;
     }
