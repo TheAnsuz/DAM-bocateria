@@ -58,7 +58,7 @@ public class Ticket {
         while (ammount > cantidadMaxima) {
             ammount -= cantidadMaxima;
             builder.append(String.format("%-21s %5s %11s%n",
-                    producto.getName(), cantidadMaxima, producto.getPrice() * cantidadMaxima + "€")
+                    producto.getName(), (int) cantidadMaxima, producto.getPrice() * cantidadMaxima + "€")
             );
         }
 
@@ -87,7 +87,7 @@ public class Ticket {
         }
         ticket.append("---------------------------------------\n");
         ticket.append(String.format("%40s", price + "€\n"));
-        ticket.append("Modo de pago: ")
+        ticket.append("Forma de pago: ")
                 .append(tarjeta ? "tarjeta" : "en efectivo").append("\n");
         ticket.append("\n");
         ticket.append("=======================================\n");
