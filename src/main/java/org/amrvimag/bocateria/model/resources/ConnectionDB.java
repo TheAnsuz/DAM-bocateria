@@ -3,10 +3,9 @@ package org.amrvimag.bocateria.model.resources;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.view.ViewWrapper;
 
-public class ConnectionDB implements Configuration.ConfigurationListener {
+public class ConnectionDB {
 
     private static Connection con;
 
@@ -25,16 +24,10 @@ public class ConnectionDB implements Configuration.ConfigurationListener {
         return con;
     }
 
-    @Override
-    public void onChange(String key, String oldValue, String newValue) {
-        switch (key) {
-            case "sql.url":
-            case "sql.username":
-            case "sql.password":
-                con = null;
-                createConnection(Configuration.getConfig("sql.url"), Configuration
-                        .getConfig("sql.username"), Configuration
-                        .getConfig("sql.password"));
-        }
+    public static void updateDatabaseConfig(String url, String username, String password) {
+        con = null;
+        System.out.println("Updated database connection");
+        createConnection(url, username, password);
     }
+
 }

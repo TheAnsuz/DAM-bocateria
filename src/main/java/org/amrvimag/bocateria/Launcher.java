@@ -3,7 +3,6 @@ package org.amrvimag.bocateria;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import org.amrvimag.bocateria.model.resources.ConnectionDB;
 import org.amrvimag.bocateria.view.ViewWrapper;
 
@@ -22,9 +21,9 @@ public class Launcher {
             Logger.getLogger(Launcher.class.getName())
                     .log(Level.SEVERE, null, ex);
         }
+        ViewWrapper.initialize();
         ConnectionDB.createConnection(Configuration.getConfig("sql.url"),
                 Configuration.getConfig("sql.username"),
                 Configuration.getConfig("sql.password"));
-        ViewWrapper.initialize();
     }
 }

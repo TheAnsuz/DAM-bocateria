@@ -1,5 +1,7 @@
 package org.amrvimag.bocateria.controller;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import org.amrvimag.bocateria.model.dao.EmpleadosDAO;
 import org.amrvimag.bocateria.model.dao.ProductosDAO;
 import org.amrvimag.bocateria.model.dao.VentasDAO;
@@ -7,10 +9,6 @@ import org.amrvimag.bocateria.model.entity.Empleado;
 import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.model.entity.Venta;
 import org.amrvimag.bocateria.view.ViewWrapper;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class ControllerDAO {
 

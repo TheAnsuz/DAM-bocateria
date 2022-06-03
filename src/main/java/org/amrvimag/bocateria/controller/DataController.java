@@ -1,21 +1,25 @@
 package org.amrvimag.bocateria.controller;
 
+import java.util.ArrayList;
+import org.amrvimag.bocateria.Configuration;
 import org.amrvimag.bocateria.model.entity.Producto;
 import org.amrvimag.bocateria.model.entity.Ticket;
 import org.amrvimag.bocateria.model.entity.Venta;
+import org.amrvimag.bocateria.model.resources.ConnectionDB;
 import org.amrvimag.bocateria.view.ViewWrapper;
-import java.util.ArrayList;
 
-public class DataController {
+public class DataController implements Configuration.ConfigurationListener {
 
     private static DataController instance;
 
-    private DataController() {}
+    private DataController() {
+    }
 
     public static DataController getInstance() {
         if (instance == null)
             instance = new DataController();
 
+        Configuration.addListener(instance);
         return instance;
     }
 
@@ -51,8 +55,28 @@ public class DataController {
 
         ControllerDAO.addVenta(ViewWrapper.getView().getEmpleado(), getTotalPrice());
         ArrayList<Venta> ventas = ControllerDAO.getVentas();
-        Ticket ticket = new Ticket(ventas.get(ventas.size() -1), addedProducts, card);
+        Ticket ticket = new Ticket(ventas.get(ventas.size() - 1), addedProducts, card);
         ViewWrapper.getView().showTicket(ticket);
         clearAddedProducts();
+    }
+
+    @Override
+    public void onChange(String key, String oldValue, String newValue) {
+        String url = Configuration.getConfig("sql.url");
+        String user = Configuration.getConfig("sql.url");
+        String pass = Configuration.getConfig("sql.url");
+
+        switch (key) {
+            case "sql.url":
+                url = newValue;
+                break;
+            case "sql.username":
+                user = newValue;
+                break;
+            case "sql.password":
+                pass = newValue;
+                break;
+        }
+        ConnectionDB.updateDatabaseConfig(url, user, pass);
     }
 }

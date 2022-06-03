@@ -4,7 +4,6 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import javax.swing.UIManager;
@@ -43,11 +42,11 @@ public class ViewWrapper {
     public void setEmpleado(Empleado emp) {
         mainframe.setEmpleado(emp);
     }
-    
+
     public Empleado getEmpleado() {
         return mainframe.getEmpleado();
     }
-    
+
     public static String getSelectedLookAndFeel() {
         return selectedLookAndFeel;
     }
@@ -89,12 +88,9 @@ public class ViewWrapper {
             default:
                 UIManager.setLookAndFeel(UIManager
                         .getSystemLookAndFeelClassName());
-                System.err.println(UIManager
-                        .getSystemLookAndFeelClassName());
                 selectedLookAndFeel = "System Default";
                 break;
         }
-        System.out.println(selectedLookAndFeel);
     }
 
     private final Mainframe mainframe;
@@ -119,11 +115,11 @@ public class ViewWrapper {
     public String formatTime(TemporalAccessor date) {
         return timeFormatter.format(date);
     }
-    
+
     public String formatNumber(Number number) {
         return numberFormatter.format(number);
     }
-    
+
     private void validateConfig() {
         if (!Configuration.exists())
             showConfiguration();
@@ -162,7 +158,7 @@ public class ViewWrapper {
     public boolean seesEmpleadoSelector() {
         return empleadoDialog.isVisible();
     }
-    
+
     public void showVentas() {
         ventasDialog.setLocationRelativeTo(mainframe);
         ventasDialog.setVisible(true);
