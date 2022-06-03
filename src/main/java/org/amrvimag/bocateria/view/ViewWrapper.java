@@ -173,9 +173,7 @@ public class ViewWrapper implements Configuration.ConfigurationListener {
 
     @Override
     public void onChange(String key, String oldValue, String newValue) {
-//        System.out.println("Drivethrough - " + key + " == " + oldValue + " > " + newValue);
         if (key.equals("application.laf")) {
-//            System.out.println("Request LAF change");
             try {
                 ViewWrapper.setLookAndFeel(newValue);
                 SwingUtilities.updateComponentTreeUI(mainframe);

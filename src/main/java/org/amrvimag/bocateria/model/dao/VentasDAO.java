@@ -27,7 +27,6 @@ public class VentasDAO {
             String idEmp = rs.getString(3);
             double total = rs.getDouble(4);
             ventas.add(new Venta(id, date, EmpleadosDAO.getEmp(idEmp), total));
-            System.out.println(new Venta(id, date, EmpleadosDAO.getEmp(idEmp), total));
         }
         return ventas;
     }

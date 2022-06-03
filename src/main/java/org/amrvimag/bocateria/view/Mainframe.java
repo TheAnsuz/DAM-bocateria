@@ -118,7 +118,6 @@ public final class Mainframe extends javax.swing.JFrame implements Configuration
         int state = super.getExtendedState();
         super.pack(); //To change body of generated methods, choose Tools | Templates.
         super.setExtendedState(state);
-        System.out.println(Arrays.toString(colors));
     }
 
     public Empleado getEmpleado() {

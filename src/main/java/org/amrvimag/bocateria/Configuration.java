@@ -129,7 +129,6 @@ public class Configuration {
             return false;
 
         for (ConfigurationListener listener : listeners) {
-            System.out.println(listener.getClass().getName());
             listener.onChange(key, old, value);
         }
 
