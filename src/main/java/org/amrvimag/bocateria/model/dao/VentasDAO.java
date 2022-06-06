@@ -1,12 +1,11 @@
 package org.amrvimag.bocateria.model.dao;
 
-import org.amrvimag.bocateria.model.entity.Empleado;
-import org.amrvimag.bocateria.model.entity.Venta;
-import org.amrvimag.bocateria.model.resources.ConnectionDB;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
+import org.amrvimag.bocateria.model.entity.Empleado;
+import org.amrvimag.bocateria.model.entity.Venta;
+import org.amrvimag.bocateria.model.resources.ConnectionDB;
 
 public class VentasDAO {
 
@@ -38,7 +37,7 @@ public class VentasDAO {
      * @return Whether the operation has been carried out successfully
      * @throws SQLException
      */
-    public static boolean addVenta(Empleado emp, double total) throws SQLException {
+    public static boolean addVenta(Empleado emp, double total) throws SQLException {       
         Connection con = ConnectionDB.getConnection();
         String update = "INSERT INTO ventas VALUES(null, ?, ?, ?)";
         PreparedStatement pst = con.prepareStatement(update);

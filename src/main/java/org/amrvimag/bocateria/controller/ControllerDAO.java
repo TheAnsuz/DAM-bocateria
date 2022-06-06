@@ -23,7 +23,7 @@ public class ControllerDAO {
     }
 
     public static ArrayList<Venta> getVentas() {
-        ArrayList<Venta> ventas =  new ArrayList<>();
+        ArrayList<Venta> ventas = new ArrayList<>();
         try {
             ventas = VentasDAO.getVentas();
         } catch (Exception e) {
@@ -32,13 +32,19 @@ public class ControllerDAO {
         return ventas;
     }
 
-    public static void addVenta(Empleado emp, double total) {
+    public static boolean addVenta(Empleado emp, double total) {
+        if (total > 999.99) {
+            ViewWrapper.getView().showWarning("Las ventas no pueden ser superiores a 999.99€");
+            return false;
+        }
         try {
             if (!VentasDAO.addVenta(emp, total))
                 throw new Exception("No se ha podido añadir una venta");
         } catch (Exception e) {
             ViewWrapper.getView().showError(e);
+            return false;
         }
+        return true;
     }
 
     public static ArrayList<Empleado> getEmpleados() {

@@ -53,7 +53,11 @@ public class DataController implements Configuration.ConfigurationListener {
         if (addedProducts.isEmpty())
             return;
 
-        ControllerDAO.addVenta(ViewWrapper.getView().getEmpleado(), getTotalPrice());
+        boolean completed = ControllerDAO.addVenta(ViewWrapper.getView().getEmpleado(), getTotalPrice());
+
+        if (!completed)
+            return;
+
         ArrayList<Venta> ventas = ControllerDAO.getVentas();
         Ticket ticket = new Ticket(ventas.get(ventas.size() - 1), addedProducts, card);
         ViewWrapper.getView().showTicket(ticket);
