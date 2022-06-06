@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.amrv-imag</groupId>
     <artifactId>dam-bocateria</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
     <packaging>jar</packaging>
     <url>https://github.com/TheAnsuz/DAM-bocateria</url>
     <name>Proyecto DAM 3º trimestre - Bocateria</name>
